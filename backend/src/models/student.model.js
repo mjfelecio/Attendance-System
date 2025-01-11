@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../db/index.js";
 
 export const Student = sequelize.define("Student", {
-    student_id: {
+    id: {
         // Student USN
         type: DataTypes.INTEGER,
         autoIncrement: true, // autoincrement for development purposes only
