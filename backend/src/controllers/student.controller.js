@@ -82,3 +82,32 @@ export const editStudent = async (req, res) => {
         });
     }
 };
+
+export const deleteStudent = async (req, res) => {
+    const { studentId } = req.params;
+
+    try {
+        const student = await Student.findByPk(studentId);
+
+        if (!student) throw new Error("Student not found");
+
+        await student.destroy({ force: true });
+
+        res.status(200).json({
+            success: true,
+            message: "Successfully deleted student",
+        });
+    } catch (error) {
+        if (error.message.includes("not found")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while deleting student",
+        });
+    }
+};
