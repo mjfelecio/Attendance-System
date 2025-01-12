@@ -26,3 +26,29 @@ export const addStudent = async (req, res) => {
         });
     }
 };
+
+export const fetchStudents = async (req, res) => {
+    try {
+        const students = await Student.findAll();
+
+        if (!students || students.length === 0) throw new Error("No student in the database");
+
+        res.status(201).json({
+            success: true,
+            message: "Students fetched successfully",
+            data: students,
+        });
+    } catch (error) {
+        if (error.message.includes("No student")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching the students",
+        });
+    }
+};
