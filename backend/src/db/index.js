@@ -10,7 +10,8 @@ export const sequelize = new Sequelize({
 
 export const connectDB = async () => {
     try {
-        await sequelize.sync();
+        // Clears the database every time you connect to it for development purposes
+        await sequelize.sync({ force: true });
         await sequelize.authenticate();
         console.log("Database connected");
     } catch (error) {

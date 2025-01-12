@@ -5,13 +5,11 @@ export const Student = sequelize.define("Student", {
     id: {
         // Student USN
         type: DataTypes.INTEGER,
-        autoIncrement: true, // autoincrement for development purposes only
-        primaryKey: true,
+        primaryKey: true
     },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
     },
     strandProgram: {
         // Animation or BSIT
