@@ -1,4 +1,3 @@
-import { sequelize } from "../db/index.js";
 import { Student } from "../models/student.model.js";
 
 export const addStudent = async (req, res) => {
@@ -49,6 +48,37 @@ export const fetchStudents = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "An error occurred while fetching the students",
+        });
+    }
+};
+
+export const editStudent = async (req, res) => {
+    const { studentId } = req.params;
+    const editDetails = req.body;
+
+    try {
+        const student = await Student.findByPk(studentId);
+
+        if (!student) throw new Error("Student not found");
+
+        const editedStudent = await student.update(editDetails);
+
+        res.status(200).json({
+            success: true,
+            message: "Successfully edited student details",
+            data: editedStudent,
+        });
+    } catch (error) {
+        if (error.message.includes("not found")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while editing student details",
         });
     }
 };
