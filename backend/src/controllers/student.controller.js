@@ -126,6 +126,13 @@ export const findStudent = async (req, res) => {
             data: student,
         });
     } catch (error) {
+        if (error.message.includes("not found")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+        
         res.status(500).json({
             success: false,
             message: "An error occurred while fetching student",
