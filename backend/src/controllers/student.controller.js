@@ -111,3 +111,24 @@ export const deleteStudent = async (req, res) => {
         });
     }
 };
+
+export const findStudent = async (req, res) => {
+    const { USN } = req.query;
+
+    try {
+        const student = await Student.findByPk(USN);
+
+        if (!student) throw new Error("Student not found");
+
+        res.status(200).json({
+            success: true,
+            message: "Student found",
+            data: student,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching student",
+        });
+    }
+};
