@@ -8,6 +8,7 @@ function App() {
   return (
     <Box minH={"100vh"} bgColor={"white"}>
       <Navbar/>
+
       <Routes>
         <Route path="/" element={<Dashboard />}></Route>
         <Route path="/student-list" element={<StudentList />}></Route>
