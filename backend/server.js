@@ -4,6 +4,7 @@ import cors from "cors";
 
 import { connectDB } from "./src/db/index.js";
 import studentRoutes from "./src/routes/student.route.js";
+import eventRoutes from "./src/routes/event.route.js";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/student", studentRoutes);
+app.use("/api/event", eventRoutes);
 
 app.listen(PORT, () => {
     connectDB();
