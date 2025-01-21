@@ -1,4 +1,4 @@
-import { Event } from "../models/index.js";
+import { Attendance, Event } from "../models/index.js";
 
 
 export const createEvent = async (req, res) => {
@@ -107,7 +107,7 @@ export const deleteEvent = async (req, res) => {
 };
 
 export const fetchEvent = async (req, res) => {
-    const { eventId } = req.query;
+    const { eventId } = req.params;
 
     try {
         const event = await Event.findByPk(eventId);
@@ -134,3 +134,50 @@ export const fetchEvent = async (req, res) => {
     }
 };
 
+export const fetchEventAttendanceRecords = async (req, res) => {
+    const { eventId } = req.params;
+
+    try {
+        const eventRecords = await Event.findOne({
+            where: {
+                id: eventId,
+            },
+            include: [{
+                model: Attendance,
+            }]
+        });
+
+        if (!eventRecords) throw new Error("Event not found");
+
+        if (eventRecords.Attendances.length === 0) {
+            throw new Error("No attendance records for this event");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Event found",
+            data: eventRecords,
+        });
+    } catch (error) {
+        console.log(error);
+        
+        if (error.message.includes("not found")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        if (error.message.includes("No attendance")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+        
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching event attendance records",
+        });
+    }
+};
