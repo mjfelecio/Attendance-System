@@ -103,3 +103,32 @@ export const editRecord = async (req, res) => {
         });
     }
 };
+
+export const deleteRecord = async (req, res) => {
+    const { recordId } = req.params;
+
+    try {
+        const attendanceRecord = await Attendance.findByPk(recordId);
+
+        if (!attendanceRecord) throw new Error("Attendance record not found");
+
+        await attendanceRecord.destroy({ force: true });
+
+        res.status(200).json({
+            success: true,
+            message: "Successfully deleted attendance record",
+        });
+    } catch (error) {
+        if (error.message.includes("not found")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while deleting attendance record",
+        });
+    }
+};
