@@ -1,10 +1,10 @@
 import express from "express";
-import { createAttendanceRecord, fetchRecord } from "../controllers/attendance.controller.js";
+import { createAttendanceRecord, editRecord, fetchRecord } from "../controllers/attendance.controller.js";
 const router = express.Router();
 
 router.post("/", createAttendanceRecord);
-router.get("/fetch?", fetchRecord);
-// router.put("/:eventId", editEvent);
+router.get("/:recordId", fetchRecord);
+router.put("/:recordId", editRecord);
 // router.delete("/:eventId", deleteEvent);
 // router.get("/fetch?", fetchEvent);
 

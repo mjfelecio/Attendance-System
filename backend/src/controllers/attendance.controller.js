@@ -46,7 +46,7 @@ export const createAttendanceRecord = async (req, res) => {
 };
 
 export const fetchRecord = async (req, res) => {
-    const { recordId } = req.query;
+    const { recordId } = req.params;
 
     try {
         const attendanceRecord = await Attendance.findByPk(recordId);
@@ -69,6 +69,37 @@ export const fetchRecord = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "An error occurred while fetching attendance record",
+        });
+    }
+};
+
+export const editRecord = async (req, res) => {
+    const { recordId } = req.params;
+    const editDetails = req.body;
+
+    try {
+        const attendanceRecord = await Attendance.findByPk(recordId);
+
+        if (!attendanceRecord) throw new Error("Attendance record not found");
+
+        const editedRecord = await attendanceRecord.update(editDetails);
+
+        res.status(200).json({
+            success: true,
+            message: "Successfully edited attendance record details",
+            data: editedRecord,
+        });
+    } catch (error) {
+        if (error.message.includes("not found")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while editing attendance record details",
         });
     }
 };
