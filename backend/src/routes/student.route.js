@@ -14,7 +14,7 @@ router.post("/", addStudent);
 router.get("/", fetchStudents);
 router.put("/:studentId", editStudent);
 router.delete("/:studentId", deleteStudent);
-router.get("/find?", findStudent); // TODO: Fix improper routes with "?" in them (Remove the ?)
+router.get("/find", findStudent);
 router.get("/events/:studentId", fetchAttendedEvents);
 
 export default router;
