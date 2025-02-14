@@ -13,7 +13,7 @@ export const createAttendanceRecord = async (req, res) => {
         });
 
         if (duplicateRecord) {
-            throw Error("This student already has an attendance record.")
+            throw Error("This student already has an attendance record.");
         }
 
         const attendanceRecord = await Attendance.create(recordDetails);
@@ -65,7 +65,7 @@ export const fetchRecord = async (req, res) => {
                 message: error.message,
             });
         }
-        
+
         res.status(500).json({
             success: false,
             message: "An error occurred while fetching attendance record",

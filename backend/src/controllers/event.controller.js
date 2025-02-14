@@ -158,9 +158,7 @@ export const fetchEventAttendanceRecords = async (req, res) => {
             message: "Event found",
             data: eventRecords,
         });
-    } catch (error) {
-        console.log(error);
-        
+    } catch (error) {        
         if (error.message.includes("not found")) {
             return res.status(400).json({
                 success: false,
