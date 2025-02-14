@@ -10,14 +10,12 @@ export const Event = sequelize.define("Event", {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
     },
-    details: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    description: {
+        type: DataTypes.TEXT,
     },
     date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
     },
     startTime: {

@@ -1,4 +1,4 @@
-import { Student } from "../models/student.model.js";
+import { Attendance, Event, Student } from "../models/index.js";
 
 export const addStudent = async (req, res) => {
     const studentDetails = req.body;
@@ -108,6 +108,80 @@ export const deleteStudent = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "An error occurred while deleting student",
+        });
+    }
+};
+
+export const findStudent = async (req, res) => {
+    const { USN } = req.query;
+
+    try {
+        const student = await Student.findByPk(USN);
+
+        if (!student) throw new Error("Student not found");
+
+        res.status(200).json({
+            success: true,
+            message: "Student found",
+            data: student,
+        });
+    } catch (error) {
+        if (error.message.includes("not found")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching student",
+        });
+    }
+};
+
+export const fetchAttendedEvents = async (req, res) => {
+    const { studentId } = req.params;
+
+    try {
+        const student = await Student.findByPk(studentId);
+
+        if (!student) throw new Error("Student not found");
+
+        const attendanceRecords = await Attendance.findAll({
+            where: {
+                studentId,
+            },
+            include: [{ model: Event }],
+        });
+
+        if (attendanceRecords.length === 0) {
+            throw new Error("This student has not attended any events");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Attended events fetched",
+            data: attendanceRecords,
+        });
+    } catch (error) {
+        if (error.message.includes("not found")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        if (error.message.includes("not attended")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching attended events",
         });
     }
 };

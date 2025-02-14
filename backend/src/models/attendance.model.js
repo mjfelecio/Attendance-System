@@ -10,14 +10,14 @@ export const Attendance = sequelize.define("Attendance", {
     studentId: { // Foreign Key
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
     },
     eventId: { // Foreign Key
         type: DataTypes.INTEGER,
         allowNull: false,
     },
     status: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
+        values: ['present', 'absent', 'excused'],
         allowNull: false,
     },
     isLate: {
