@@ -1,0 +1,3 @@
+Stores the Components specific to a feature in its own directory
+
+Ex. features/events/EventList.jsx

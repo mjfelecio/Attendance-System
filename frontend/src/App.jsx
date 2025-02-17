@@ -1,21 +1,15 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import StudentList from "./pages/StudentList";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import CalendarPage from "./pages/CalendarPage";
+import ManageList from "./pages/ManageList";
+import Settings from "./pages/Settings";
+import Navbar from "./components/layout/Navbar";
 
 function App() {
   return (
-    <Box minH={"100vh"} bgColor={"white"}>
+    <Box minH="100vh" bgColor="black">
       <Navbar />
-      <Flex dir="row">
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={<Dashboard />}></Route>
-          <Route path="/student-list" element={<StudentList />}></Route>
-        </Routes>
-      </Flex>
     </Box>
   );
 }

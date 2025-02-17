@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 
-const Dashboard = () => {
+const Settings = () => {
   return (
     <Box 
       w="100%" 
@@ -13,10 +13,10 @@ const Dashboard = () => {
       justifyContent="center"
     >
       <Text color={"black"} textAlign={"center"} fontSize={"2xl"}>
-        DASHBOARD PLACEHOLDER
+        Settings PLACEHOLDER
       </Text>
     </Box>
   );
 };
 
-export default Dashboard;
+export default Settings;
