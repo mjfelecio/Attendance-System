@@ -11,10 +11,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faUserCircle } from "@fortawesome/free-regular-svg-icons";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
-import CalendarPage from "../pages/CalendarPage";
-import ManageList from "../pages/ManageList";
-import Settings from "../pages/Settings";
+import Dashboard from "../../pages/Dashboard";
+import CalendarPage from "../../pages/CalendarPage";
+import ManageList from "../../pages/ManageList";
+import Settings from "../../pages/Settings";
 import SButtons from "./SidebarButtons";
 
 const MotionBox = motion(Box);
