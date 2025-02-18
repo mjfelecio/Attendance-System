@@ -1,4 +1,3 @@
-import React from "react";
 import { VStack, Button, Text, Icon } from "@chakra-ui/react";
 import { FaTachometerAlt, FaUserGraduate, FaCalendarCheck, FaChartLine } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom'; 
