@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faUserCircle } from "@fortawesome/free-regular-svg-icons";
 import { InputGroup } from "../snippets/input-group";
+import PropTypes from "prop-types";
 
 const Navbar = ({ toggleSidebar }) => {
   return (
@@ -38,5 +39,9 @@ const Navbar = ({ toggleSidebar }) => {
     </Flex>
   );
 };
+
+Navbar.propTypes = {
+	toggleSidebar: PropTypes.func
+}
 
 export default Navbar;

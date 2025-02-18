@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import SButtons from "./SidebarButtons";
 import { Box } from "@chakra-ui/react";
+import PropTypes from "prop-types";
 
 const MotionBox = motion(Box);
 
@@ -28,5 +29,9 @@ const Sidebar = ({ isOpen }) => {
     </MotionBox>
   );
 };
+
+Sidebar.propTypes = {
+	isOpen: PropTypes.bool
+}
 
 export default Sidebar;
