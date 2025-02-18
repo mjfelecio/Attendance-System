@@ -30,9 +30,7 @@ function App() {
           p={6}
           transition="margin-left 0.5s ease"
           ml={isSidebarOpen ? "250px" : "0px"}
-          bg="gray.100"
-          position="relative"
-          zIndex="base"
+          bg="white"
           overflow={"auto"}
         >
           <Routes>

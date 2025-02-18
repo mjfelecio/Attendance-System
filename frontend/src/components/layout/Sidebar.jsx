@@ -10,11 +10,9 @@ const Sidebar = ({ isOpen }) => {
       w="250px"
       bg="blue.900"
       color="white"
-      p={4}
-      boxShadow="md"
+      gap={4}
       h="100%"
       position="absolute"
-      zIndex="overlay"
       left="0"
       top="0"
       initial={{ x: "-100%" }}
