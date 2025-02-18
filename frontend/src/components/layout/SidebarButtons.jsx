@@ -1,24 +1,16 @@
 import { VStack, Button, Text, Icon } from "@chakra-ui/react";
 import { FaTachometerAlt, FaUserGraduate, FaCalendarCheck, FaChartLine } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from "react-router-dom";
 
 const SButtons = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
-    <VStack
-      spacing={4}
-      align="stretch"
-      bg="blue.900"
-      color="white"
-      h="100vh"
-      p={4}
-      boxShadow="lg"
-    >
+    <VStack spacing={4} align="stretch" bg="blue.900" color="white" h="100vh" p={4} boxShadow="lg">
       <Text fontSize="lg" fontWeight="bold" mb={6}>
         Navigation
       </Text>
 
-{/*The icons didn't appear, will debug later */}
+      {/*The icons didn't appear, will debug later */}
 
       <Button
         variant="white"
@@ -27,7 +19,7 @@ const SButtons = () => {
         colorScheme="whiteAlpha"
         fontWeight="medium"
         _hover={{ bg: "white", color: "black" }}
-        onClick={() => navigate ('/Dashboard')}
+        onClick={() => navigate("/Dashboard")}
       >
         Dashboard
       </Button>
@@ -38,7 +30,7 @@ const SButtons = () => {
         colorScheme="white"
         fontWeight="medium"
         _hover={{ bg: "red" }}
-        onClick={() => navigate ('/CalendarPage')}
+        onClick={() => navigate("/CalendarPage")}
       >
         Calendar
       </Button>
@@ -49,9 +41,9 @@ const SButtons = () => {
         colorScheme="whiteAlpha"
         fontWeight="medium"
         _hover={{ bg: "red" }}
-        onClick={() => navigate ('/ManageList')}
+        onClick={() => navigate("/ManageList")}
       >
-       Manage List
+        Manage List
       </Button>
       <Button
         variant="white"
@@ -60,7 +52,7 @@ const SButtons = () => {
         colorScheme="whiteAlpha"
         fontWeight="medium"
         _hover={{ bg: "red" }}
-        onClick={() => navigate ('/Settings')}
+        onClick={() => navigate("/Settings")}
       >
         Settings
       </Button>
@@ -71,7 +63,7 @@ const SButtons = () => {
         colorScheme="whiteAlpha"
         fontWeight="medium"
         _hover={{ bg: "red" }}
-        onClick={() => navigate ('/Dashboard')}
+        onClick={() => navigate("/Dashboard")}
       >
         Log Out
       </Button>

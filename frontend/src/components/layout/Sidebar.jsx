@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen }) => {
 };
 
 Sidebar.propTypes = {
-	isOpen: PropTypes.bool
-}
+  isOpen: PropTypes.bool,
+};
 
 export default Sidebar;

@@ -18,12 +18,7 @@ function App() {
   return (
     <Flex flexDirection="column" h="100vh">
       <Navbar toggleSidebar={toggleSidebar} />
-      <Flex
-        flex={1}
-        h="calc(100vh - 50px)"
-        overflow="hidden"
-        position="relative"
-      >
+      <Flex flex={1} h="calc(100vh - 50px)" overflow="hidden" position="relative">
         <Sidebar isOpen={isSidebarOpen} />
         <Box
           flex={1}
@@ -35,7 +30,7 @@ function App() {
         >
           <Routes>
             <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/CalendarPage" element={<CalendarPage />} />
+            <Route path="/CalendarPage" element={<CalendarPage isResized={isSidebarOpen} />} />
             <Route path="/ManageList" element={<ManageList />} />
             <Route path="/Settings" element={<Settings />} />
           </Routes>
