@@ -10,7 +10,7 @@ const Navbar = ({ toggleSidebar }) => {
     <Flex
       w={"100%"}
       h="50px"
-			bg={"gray.200"}
+      bg={"gray.200"}
       px={"12px"}
       alignItems="center"
       justifyContent="space-between"
@@ -22,9 +22,7 @@ const Navbar = ({ toggleSidebar }) => {
         <Box>
           <InputGroup
             flex="1"
-            endElement={
-              <FontAwesomeIcon icon={faSearch} size={"md"} color={"black"} />
-            }
+            endElement={<FontAwesomeIcon icon={faSearch} size={"md"} color={"black"} />}
           >
             <Input
               placeholder="Search..."
@@ -41,7 +39,7 @@ const Navbar = ({ toggleSidebar }) => {
 };
 
 Navbar.propTypes = {
-	toggleSidebar: PropTypes.func
-}
+  toggleSidebar: PropTypes.func,
+};
 
 export default Navbar;
