@@ -35,7 +35,7 @@ function App() {
         >
           <Routes>
             <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/CalendarPage" element={<CalendarPage />} />
+            <Route path="/CalendarPage" element={<CalendarPage isResized={isSidebarOpen} />} />
             <Route path="/ManageList" element={<ManageList />} />
             <Route path="/Settings" element={<Settings />} />
           </Routes>
