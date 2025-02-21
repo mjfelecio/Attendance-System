@@ -4,10 +4,11 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
-
+import EventModal from "../features/events/EventModal";
 const CalendarPage = ({ isResized }) => {
   /* sample data */
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDateClick = (arg) => {
     setSelectedEvent({ date: arg.dateStr, title: "BSP, Annual Election" });
@@ -81,7 +82,13 @@ const CalendarPage = ({ isResized }) => {
                 <Text>Select a date to view details</Text>
               )}
             </Box>
-            <Button bg="blue.800" color="white" _hover={{ bg: "blue.900" }} w="full">
+            <Button
+              bg="blue.800"
+              color="white"
+              _hover={{ bg: "blue.900" }}
+              w="full"
+              onClick={() => setIsModalOpen(true)}
+            >
               Create Event
             </Button>
             <Button bg="blue.800" color="white" _hover={{ bg: "blue.900" }} w="full">
@@ -90,6 +97,12 @@ const CalendarPage = ({ isResized }) => {
           </VStack>
         </Flex>
       </Container>
+
+      <EventModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={(e) => console.log(e)}
+      />
     </Box>
   );
 };
