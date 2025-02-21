@@ -26,6 +26,13 @@ const CalendarPage = ({ isResized }) => {
     }
   }, [isResized]);
 
+  const handleAddEvent = (event) => {
+    calendarRef.current.getApi().addEvent({
+      title: event.name,
+      start: event.eventDate,
+    })
+  }
+
   return (
     <Box
       minH="100vh"
@@ -101,7 +108,7 @@ const CalendarPage = ({ isResized }) => {
       <EventModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSave={(e) => console.log(e)}
+        onSave={(e) => handleAddEvent(e)}
       />
     </Box>
   );
