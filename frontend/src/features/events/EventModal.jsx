@@ -14,6 +14,7 @@ import { Field } from "../../components/snippets/field";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { forwardRef, useState } from "react";
+import { convertToUTC, getDateOnly, getHourAndMinuteOnly } from "../../utils/dateUtils";
 
 const DateInput = forwardRef(({ value, onClick, onChange }, ref) => (
   <Input
@@ -50,14 +51,19 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
   const [endTime, setEndTime] = useState(new Date());
 
   const handleSave = () => {
+    const formattedDate = getDateOnly(eventDate);
+    const formattedStartTime = getHourAndMinuteOnly(startTime);
+    const formattedEndTime = getHourAndMinuteOnly(endTime);
+
     onSave({
       name,
       description,
-      eventDate,
-      startTime,
-      endTime,
+      eventDate: formattedDate,
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
     });
     onClose();
+
     // Clear inputs
     setName("");
     setDescription("");
