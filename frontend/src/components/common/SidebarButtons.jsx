@@ -27,7 +27,7 @@ const SButtons = () => {
         justifyContent="start"
         colorScheme="whiteAlpha"
         fontWeight="medium"
-        _hover={{ bg: "white", color: "black" }}
+        _hover={{ bg: "red",}}
         onClick={() => navigate ('/Dashboard')}
       >
         Dashboard
@@ -36,7 +36,7 @@ const SButtons = () => {
         variant="white"
         leftIcon={<Icon as={FaUserGraduate} />}
         justifyContent="start"
-        colorScheme="white"
+        colorScheme="whiteAlpha"
         fontWeight="medium"
         _hover={{ bg: "red" }}
         onClick={() => navigate ('/CalendarPage')}

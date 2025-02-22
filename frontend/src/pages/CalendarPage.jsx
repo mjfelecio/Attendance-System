@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import { Box, Button, Heading, VStack, Text, Container, Flex } from "@chakra-ui/react";
+import { Box, Heading, VStack, Text, Container, Flex } from "@chakra-ui/react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import CalendarEventButtons from "../components/common/CalendarEventButtons";
 
 const CalendarPage = () => {
-
-    /* sample data */
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const handleDateClick = (arg) => {
     setSelectedEvent({ date: arg.dateStr, title: "BSP, Annual Election" });
   };
-    /* sample dataSS */
 
   return (
     <Box minH="100vh" bgGradient="linear(to-r, blue.100, blue.300)" color="black" p={4} overflowY="auto">
@@ -35,8 +33,7 @@ const CalendarPage = () => {
                 <Text>Select a date to view details</Text>
               )}
             </Box>
-            <Button bg="blue.800" color="white" _hover={{ bg: "blue.900" }} w="full">Create Event</Button>
-            <Button bg="blue.800" color="white" _hover={{ bg: "blue.900" }} w="full">Take Attendance</Button>
+            <CalendarEventButtons />
           </VStack>
         </Flex>
       </Container>
