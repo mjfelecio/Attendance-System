@@ -5,7 +5,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
 import EventModal from "../features/events/EventModal";
+import useEventStore from "../stores/event.store.js";
 const CalendarPage = ({ isResized }) => {
+  const { createEvent } = useEventStore();
+
   /* sample data */
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,10 +29,20 @@ const CalendarPage = ({ isResized }) => {
     }
   }, [isResized]);
 
-  const handleAddEvent = (event) => {
+  const handleAddEvent = async (newEvent) => {
+    const { success, data, message } = await createEvent(newEvent);
+
+    if (success) {
+      console.log("Success: " + message);
+    } else {
+      console.log("Failed: " + message);
+      return;
+    }
+
     calendarRef.current.getApi().addEvent({
-      title: event.name,
-      start: event.eventDate,
+      id: data.id,
+      title: data.name,
+      start: data.date,
     })
   }
 

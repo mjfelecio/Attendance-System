@@ -58,7 +58,7 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
     onSave({
       name,
       description,
-      eventDate: formattedDate,
+      date: formattedDate,
       startTime: formattedStartTime,
       endTime: formattedEndTime,
     });
