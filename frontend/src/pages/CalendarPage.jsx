@@ -6,19 +6,29 @@ import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
 import EventModal from "../features/events/EventModal";
 import useEventStore from "../stores/event.store.js";
+import { getDateOnly } from "../utils/dateUtils";
 const CalendarPage = ({ isResized }) => {
   const { createEvent } = useEventStore();
 
-  /* sample data */
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const calendarRef = useRef(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  // const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleDateClick = (arg) => {
-    setSelectedEvent({ date: arg.dateStr, title: "BSP, Annual Election" });
-  };
-  /* sample dataSS */
+  const handleDateClick = (date) => {
+    const allEvents = calendarRef.current.getApi().getEvents();
+    const eventCount = Array.from(allEvents).filter(
+      (e) => getDateOnly(e.start) === date.dateStr,
+    ).length;
 
-  const calendarRef = useRef(null);
+    if (date.dateStr !== null && eventCount !== 0) {
+      setSelectedDate(
+        `You have ${eventCount} event${eventCount === 1 ? " " : "s"} on ${date.dateStr}, click an event to view its details`,
+      );
+    } else {
+      setSelectedDate(`You have 0 events on ${date.dateStr}, click 'Create Event' to add an event`);
+    }
+  };
 
   // Updates the size of the calendar when the Sidebar opens or closes
   useEffect(() => {
@@ -43,8 +53,8 @@ const CalendarPage = ({ isResized }) => {
       id: data.id,
       title: data.name,
       start: data.date,
-    })
-  }
+    });
+  };
 
   return (
     <Box
@@ -78,6 +88,7 @@ const CalendarPage = ({ isResized }) => {
               dateClick={handleDateClick}
               height="auto"
               ref={calendarRef}
+              // eventClick={handleDateClick}
             />
           </Box>
           <VStack
@@ -94,13 +105,18 @@ const CalendarPage = ({ isResized }) => {
               Details of Selected Date
             </Text>
             <Box bg="white" color="black" w="full" p={4} borderRadius="md">
-              {selectedEvent ? (
+              {selectedDate ? (
+                <Text>{selectedDate.toString()}</Text>
+              ) : (
+                <Text>Select a date to view details</Text>
+              )}
+              {/* {selectedEvent ? (
                 <Text>
                   {selectedEvent.date}: {selectedEvent.title}
                 </Text>
               ) : (
                 <Text>Select a date to view details</Text>
-              )}
+              )} */}
             </Box>
             <Button
               bg="blue.800"
