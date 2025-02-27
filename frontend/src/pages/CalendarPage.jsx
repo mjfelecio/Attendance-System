@@ -11,23 +11,17 @@ const CalendarPage = ({ isResized }) => {
   const { createEvent } = useEventStore();
 
   const calendarRef = useRef(null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  // const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isEventSelected, setIsEventSelected] = useState(false);
+  const [eventDetail, setEventDetail] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDateClick = (date) => {
-    const allEvents = calendarRef.current.getApi().getEvents();
-    const eventCount = Array.from(allEvents).filter(
-      (e) => getDateOnly(e.start) === date.dateStr,
-    ).length;
+    setIsEventSelected(false);
+  };
 
-    if (date.dateStr !== null && eventCount !== 0) {
-      setSelectedDate(
-        `You have ${eventCount} event${eventCount === 1 ? " " : "s"} on ${date.dateStr}, click an event to view its details`,
-      );
-    } else {
-      setSelectedDate(`You have 0 events on ${date.dateStr}, click 'Create Event' to add an event`);
-    }
+  const handleEventClick = (info) => {
+    setIsEventSelected(true);
+    setEventDetail(info.event);
   };
 
   // Updates the size of the calendar when the Sidebar opens or closes
@@ -53,6 +47,9 @@ const CalendarPage = ({ isResized }) => {
       id: data.id,
       title: data.name,
       start: data.date,
+      description: data.description,
+      eventStart: data.startTime,
+      eventEnd: data.endTime,
     });
   };
 
@@ -88,7 +85,7 @@ const CalendarPage = ({ isResized }) => {
               dateClick={handleDateClick}
               height="auto"
               ref={calendarRef}
-              // eventClick={handleDateClick}
+              eventClick={handleEventClick}
             />
           </Box>
           <VStack
@@ -102,21 +99,20 @@ const CalendarPage = ({ isResized }) => {
             boxShadow="md"
           >
             <Text fontSize="xl" fontWeight="bold">
-              Details of Selected Date
+              Details of Selected Event
             </Text>
-            <Box bg="white" color="black" w="full" p={4} borderRadius="md">
-              {selectedDate ? (
-                <Text>{selectedDate.toString()}</Text>
+            <Box flex={"1"} bg="white" color="black" w="full" p={4} borderRadius="md">
+              {isEventSelected ? (
+                <Box>
+                  <Text>Name: {eventDetail.title}</Text>
+                  <Text>Description: {eventDetail.extendedProps.description}</Text>
+                  <Text>Date: {getDateOnly(eventDetail.start)}</Text>
+                  <Text>Start: {eventDetail.extendedProps.eventStart}</Text>
+                  <Text>End: {eventDetail.extendedProps.eventEnd}</Text>
+                </Box>
               ) : (
-                <Text>Select a date to view details</Text>
+                <Text>Select an event to view its details</Text>
               )}
-              {/* {selectedEvent ? (
-                <Text>
-                  {selectedEvent.date}: {selectedEvent.title}
-                </Text>
-              ) : (
-                <Text>Select a date to view details</Text>
-              )} */}
             </Box>
             <Button
               bg="blue.800"
