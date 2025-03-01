@@ -8,14 +8,15 @@ import EventModal from "../features/events/EventModal";
 import useEventStore from "../stores/event.store.js";
 import { getDateOnly } from "../utils/dateUtils";
 const CalendarPage = ({ isResized }) => {
-  const { createEvent } = useEventStore();
+  const { createEvent, fetchEvents } = useEventStore();
 
   const calendarRef = useRef(null);
+  const [events, setEvents] = useState([]);
   const [isEventSelected, setIsEventSelected] = useState(false);
   const [eventDetail, setEventDetail] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleDateClick = (date) => {
+  const handleDateClick = () => {
     setIsEventSelected(false);
   };
 
@@ -23,15 +24,6 @@ const CalendarPage = ({ isResized }) => {
     setIsEventSelected(true);
     setEventDetail(info.event);
   };
-
-  // Updates the size of the calendar when the Sidebar opens or closes
-  useEffect(() => {
-    if (calendarRef.current) {
-      setTimeout(() => {
-        calendarRef.current.getApi().updateSize();
-      }, 500); // Small delay to allow layout transition to complete
-    }
-  }, [isResized]);
 
   const handleAddEvent = async (newEvent) => {
     const { success, data, message } = await createEvent(newEvent);
@@ -52,6 +44,40 @@ const CalendarPage = ({ isResized }) => {
       eventEnd: data.endTime,
     });
   };
+
+  // Loads previously created events to the calendar on page load
+  useEffect(() => {
+    const fetchEventsFromDB = async () => {
+      try {
+        const { data } = await fetchEvents();
+
+        // Maps the data to the proper format for FullCalendar Events
+        const transformedData = data.map((event) => ({
+          id: event.id,
+          title: event.name,
+          start: event.date,
+          description: event.description,
+          eventStart: event.startTime,
+          eventEnd: event.endTime,
+        }));
+
+        setEvents(transformedData);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEventsFromDB();
+  }, [fetchEvents]);
+
+  // Updates the size of the calendar when the Sidebar opens or closes
+  useEffect(() => {
+    if (calendarRef.current) {
+      setTimeout(() => {
+        calendarRef.current.getApi().updateSize();
+      }, 500); // Small delay to allow layout transition to complete
+    }
+  }, [isResized]);
 
   return (
     <Box
@@ -86,6 +112,7 @@ const CalendarPage = ({ isResized }) => {
               height="auto"
               ref={calendarRef}
               eventClick={handleEventClick}
+              events={events}
             />
           </Box>
           <VStack

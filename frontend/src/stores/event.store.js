@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { createEventApi } from "../services/event.service.js";
+import { createEventApi, fetchEventsApi } from "../services/event.service.js";
 
 const useEventStore = create((set) => ({
   events: [],
@@ -16,6 +16,18 @@ const useEventStore = create((set) => ({
       return { success: false, message: error.message };
     }
   },
+
+  fetchEvents: async () => {
+    try {
+        const { success, message, data } = await fetchEventsApi();
+        if (success) {
+            set({ items: data });
+        }
+        return { success, data, message };
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+},
 }));
 
 export default useEventStore;

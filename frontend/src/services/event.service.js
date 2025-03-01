@@ -34,3 +34,5 @@ export const createEventApi = async (newEvent) =>
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newEvent),
   });
+
+export const fetchEventsApi = async () => apiCall("/");
