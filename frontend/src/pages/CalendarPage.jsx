@@ -9,16 +9,11 @@ import useEventStore from "../stores/event.store.js";
 import { getDateOnly } from "../utils/dateUtils";
 const CalendarPage = ({ isResized }) => {
   const { createEvent, fetchEvents } = useEventStore();
-
-  const calendarRef = useRef(null);
   const [events, setEvents] = useState([]);
   const [isEventSelected, setIsEventSelected] = useState(false);
   const [eventDetail, setEventDetail] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleDateClick = () => {
-    setIsEventSelected(false);
-  };
+  const calendarRef = useRef(null);
 
   const handleEventClick = (info) => {
     setIsEventSelected(true);
@@ -28,21 +23,20 @@ const CalendarPage = ({ isResized }) => {
   const handleAddEvent = async (newEvent) => {
     const { success, data, message } = await createEvent(newEvent);
 
-    if (success) {
-      console.log("Success: " + message);
-    } else {
+    if (!success) {
       console.log("Failed: " + message);
-      return;
-    }
+    } else {
+      console.log("Success: " + message);
 
-    calendarRef.current.getApi().addEvent({
-      id: data.id,
-      title: data.name,
-      start: data.date,
-      description: data.description,
-      eventStart: data.startTime,
-      eventEnd: data.endTime,
-    });
+      calendarRef.current.getApi().addEvent({
+        id: data.id,
+        title: data.name,
+        start: data.date,
+        description: data.description,
+        eventStart: data.startTime,
+        eventEnd: data.endTime,
+      });
+    }
   };
 
   // Loads previously created events to the calendar on page load
@@ -50,6 +44,10 @@ const CalendarPage = ({ isResized }) => {
     const fetchEventsFromDB = async () => {
       try {
         const { data } = await fetchEvents();
+
+        if (!data || Array.from(data).length === 0) {
+          return;
+        }
 
         // Maps the data to the proper format for FullCalendar Events
         const transformedData = data.map((event) => ({
@@ -108,10 +106,10 @@ const CalendarPage = ({ isResized }) => {
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
-              dateClick={handleDateClick}
+              dateClick={() => setIsEventSelected(false)}
+              eventClick={handleEventClick}
               height="auto"
               ref={calendarRef}
-              eventClick={handleEventClick}
               events={events}
             />
           </Box>
