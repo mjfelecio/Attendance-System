@@ -16,8 +16,8 @@ import CalendarPage from "../../pages/CalendarPage";
 import ManageList from "../../pages/ManageList";
 import Settings from "../../pages/Settings";
 import SButtons from "../common/SidebarButtons";
-import CreateEventPage from "../../pages/CreateEventPage";
 import EventTakeAttendance from "../../pages/EventTakeAttendance";
+
 
 const MotionBox = motion(Box);
 
@@ -87,7 +87,6 @@ const Navbar = () => {
             <Route path="/CalendarPage" element={<CalendarPage />} />
             <Route path="/ManageList" element={<ManageList />} />
             <Route path="/Settings" element={<Settings />} />
-            <Route path="/CreateEventPage" element={<CreateEventPage />} />
             <Route path="/EventTakeAttendance" element={<EventTakeAttendance />} />
             
           </Routes>
