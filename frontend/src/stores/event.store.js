@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { createEventApi, fetchEventsApi } from "../services/event.service.js";
+import { createEventApi, editEventApi, fetchEventsApi } from "../services/event.service.js";
 
 const useEventStore = create((set) => ({
   events: [],
@@ -19,15 +19,31 @@ const useEventStore = create((set) => ({
 
   fetchEvents: async () => {
     try {
-        const { success, message, data } = await fetchEventsApi();
-        if (success) {
-            set({ items: data });
-        }
-        return { success, data, message };
+      const { success, message, data } = await fetchEventsApi();
+      if (success) {
+        set({ items: data });
+      }
+      return { success, data, message };
     } catch (error) {
-        return { success: false, message: error.message };
+      return { success: false, message: error.message };
     }
-},
+  },
+
+  editEvent: async (eventId, editedEvent) => {
+    try {
+      const { success, message, data } = await editEventApi(eventId, editedEvent);
+      if (success) {
+        set((state) => ({
+          events: state.events.map((event) =>
+            event.id === eventId ? { ...event, ...data } : event,
+          ),
+        }));
+      }
+      return { success, data, message };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  },
 }));
 
 export default useEventStore;

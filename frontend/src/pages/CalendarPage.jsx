@@ -7,17 +7,18 @@ import PropTypes from "prop-types";
 import EventModal from "../features/events/EventModal";
 import useEventStore from "../stores/event.store.js";
 import { getDateOnly } from "../utils/dateUtils";
+
 const CalendarPage = ({ isResized }) => {
-  const { createEvent, fetchEvents } = useEventStore();
+  const { createEvent, fetchEvents, editEvent } = useEventStore();
   const [events, setEvents] = useState([]);
   const [isEventSelected, setIsEventSelected] = useState(false);
-  const [eventDetail, setEventDetail] = useState({});
+  const [selectedEvent, setSelectedEvent] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const calendarRef = useRef(null);
 
   const handleEventClick = (info) => {
     setIsEventSelected(true);
-    setEventDetail(info.event);
+    setSelectedEvent(info.event);
   };
 
   const handleAddEvent = async (newEvent) => {
@@ -25,18 +26,38 @@ const CalendarPage = ({ isResized }) => {
 
     if (!success) {
       console.log("Failed: " + message);
+      return;
     } else {
       console.log("Success: " + message);
-
-      calendarRef.current.getApi().addEvent({
-        id: data.id,
-        title: data.name,
-        start: data.date,
-        description: data.description,
-        eventStart: data.startTime,
-        eventEnd: data.endTime,
-      });
     }
+
+    calendarRef.current.getApi().addEvent({
+      id: data.id,
+      title: data.name,
+      start: data.date,
+      description: data.description,
+      eventStart: data.startTime,
+      eventEnd: data.endTime,
+    });
+  };
+
+  const handleEditEvent = async (eventId, editedEvent) => {
+    // const eventId = selectedEvent.id;
+    const { success, data, message } = editEvent(eventId, editedEvent);
+
+    if (!success) {
+      console.log("Failed: " + message);
+      return;
+    } else {
+      console.log("Success: " + message);
+    }
+
+    const event = calendarRef.current.getEventById(eventId);
+    event.setProp("title", data.name);
+    event.setStart(data.startTime);
+    event.setExtendedProps("description", data.description);
+    event.setProp("eventStart", data.startTime);
+    event.setProp("eventEnd", data.endTime);
   };
 
   // Loads previously created events to the calendar on page load
@@ -129,11 +150,11 @@ const CalendarPage = ({ isResized }) => {
             <Box flex={"1"} bg="white" color="black" w="full" p={4} borderRadius="md">
               {isEventSelected ? (
                 <Box>
-                  <Text>Name: {eventDetail.title}</Text>
-                  <Text>Description: {eventDetail.extendedProps.description}</Text>
-                  <Text>Date: {getDateOnly(eventDetail.start)}</Text>
-                  <Text>Start: {eventDetail.extendedProps.eventStart}</Text>
-                  <Text>End: {eventDetail.extendedProps.eventEnd}</Text>
+                  <Text>Name: {selectedEvent.title}</Text>
+                  <Text>Description: {selectedEvent.extendedProps.description}</Text>
+                  <Text>Date: {getDateOnly(selectedEvent.start)}</Text>
+                  <Text>Start: {selectedEvent.extendedProps.eventStart}</Text>
+                  <Text>End: {selectedEvent.extendedProps.eventEnd}</Text>
                 </Box>
               ) : (
                 <Text>Select an event to view its details</Text>

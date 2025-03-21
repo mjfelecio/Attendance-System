@@ -36,3 +36,10 @@ export const createEventApi = async (newEvent) =>
   });
 
 export const fetchEventsApi = async () => apiCall("/");
+
+export const editEventApi = async (eventId, editedEvent) =>
+  apiCall(`/${eventId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(editedEvent),
+  });
