@@ -11,30 +11,38 @@ import {
 } from "../../components/snippets/dialog";
 import PropTypes from "prop-types";
 import { Field } from "../../components/snippets/field";
-import { forwardRef, useState } from "react";
-import { convertToUTC, getDateOnly, getHourAndMinuteOnly } from "../../utils/dateUtils";
+import { useState, useEffect } from "react";
+import { getDateOnly, getHourAndMinuteOnly } from "../../utils/dateUtils";
 
-const EventModal = ({ isOpen, onClose, onSave }) => {
+const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
+  // Form data states initialized as empty strings
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+
+  // Effect to populate the form data if eventData is provided
+  useEffect(() => {
+    if (eventData && Object.keys(eventData).length > 0) {
+      setName(eventData.name || "");
+      setDescription(eventData.description || "");
+      setStartDate(eventData.date ? getDateOnly(eventData.date) : ""); // Format date to "YYYY-MM-DD"
+      setEndDate(eventData.date ? getDateOnly(eventData.date) : ""); // Format date to "YYYY-MM-DD"
+      setStartTime(eventData.startTime ? getHourAndMinuteOnly(eventData.startTime) : ""); // Format time to "HH:MM"
+      setEndTime(eventData.endTime ? getHourAndMinuteOnly(eventData.endTime) : ""); // Format time to "HH:MM"
+    }
+  }, [eventData]);
 
   const handleSave = () => {
-    const formattedDate = getDateOnly(startDate);
-    const formattedStartTime = getHourAndMinuteOnly(startTime);
-    const formattedEndTime = getHourAndMinuteOnly(endTime);
-
     onSave({
       name,
       description,
-      date: formattedDate,
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
+      date: startDate,
+      startTime: startTime,
+      endTime: endTime,
     });
-    onClose();
 
     // Clear inputs
     setName("");
@@ -42,6 +50,8 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
     setStartDate("");
     setStartTime("");
     setEndTime("");
+
+    onClose();
   };
 
   return (
@@ -77,14 +87,20 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
               <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
             </Field>
           </HStack>
-          <Flex gap={"1"}>
-            <Field label="Start" required>
-              <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-            </Field>
-            <Field label="End" required>
-              <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-            </Field>
-          </Flex>
+          <HStack>
+            <Flex gap={"1"}>
+              <Field label="Start" required>
+                <Input
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                />
+              </Field>
+              <Field label="End" required>
+                <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+              </Field>
+            </Flex>
+          </HStack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
@@ -92,11 +108,11 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
               Cancel
             </Button>
           </DialogActionTrigger>
-          <Button onClick={() => handleSave()} colorPalette={"blue"}>
+          <Button colorPalette={"blue"} onClick={() => handleSave()}>
             Save
           </Button>
         </DialogFooter>
-        <DialogCloseTrigger color="black"/>
+        <DialogCloseTrigger color="black" />
       </DialogContent>
     </DialogRoot>
   );
@@ -106,6 +122,13 @@ EventModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onSave: PropTypes.func,
+  eventData: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    date: PropTypes.string, // "YYYY-MM-DD"
+    startTime: PropTypes.string, // "HH:MM"
+    endTime: PropTypes.string, // "HH:MM"
+  }),
 };
 
 export default EventModal;
