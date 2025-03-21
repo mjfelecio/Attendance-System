@@ -1,26 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Box,
-  Button,
-  VStack,
-  Text,
-  Container,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Button, VStack, Text, Container, Flex, HStack } from "@chakra-ui/react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-// Custom Edit/Delete buttons component
-import EditDeleteButtons from "../components/common/EditDeleteButtons";
 import EventModal from "../features/events/EventModal";
 import useEventStore from "../stores/event.store.js";
 import { getDateOnly } from "../utils/dateUtils";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { CiEdit, CiTrash } from "react-icons/ci";
 
 const CalendarPage = ({ isResized }) => {
   const { createEvent, fetchEvents, editEvent } = useEventStore();
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([]); // State to store events in the calendar
   const [isEventSelected, setIsEventSelected] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,8 +37,8 @@ const CalendarPage = ({ isResized }) => {
     calendarRef.current.getApi().addEvent({
       id: data.id,
       title: data.name,
-      start: data.date,
       description: data.description,
+      start: data.date,
       eventStart: data.startTime,
       eventEnd: data.endTime,
     });
@@ -64,15 +56,13 @@ const CalendarPage = ({ isResized }) => {
 
     const event = calendarRef.current.getApi().getEventById(eventId);
     event.setProp("title", data.name);
+    event.setExtendedProp("description", data.description);
     event.setStart(data.startTime);
-    event.setExtendedProps("description", data.description);
-    event.setProp("eventStart", data.startTime);
-    event.setProp("eventEnd", data.endTime);
+    event.setExtendedProp("eventStart", data.startTime);
+    event.setExtendedProp("eventEnd", data.endTime);
   };
 
-  const handleDeleteEvent = async (eventId, deletedEvent) => {
-    
-  }
+  const handleDeleteEvent = async (eventId, deletedEvent) => {};
 
   // Loads previously created events to the calendar on page load
   useEffect(() => {
@@ -102,10 +92,6 @@ const CalendarPage = ({ isResized }) => {
 
     fetchEventsFromDB();
   }, [fetchEvents]);
-
-  useEffect(() => {
-    console.log("Calendar ref:", calendarRef.current);
-  }, []);
 
   // Updates the size of the calendar when the Sidebar opens or closes
   useEffect(() => {
@@ -164,13 +150,13 @@ const CalendarPage = ({ isResized }) => {
             borderRadius="md"
             boxShadow="md"
           >
-            {selectedEvent ? (
+            {isEventSelected ? (
               <Text fontSize="xl" fontWeight="bold">
-                Details of Selected Date
+                Details of Selected Event
               </Text>
             ) : (
               <Text fontSize="xl" fontWeight="bold">
-                Details of Selected Event
+                Details of Selected Date
               </Text>
             )}
 
@@ -182,8 +168,15 @@ const CalendarPage = ({ isResized }) => {
                   <Text>Date: {getDateOnly(selectedEvent.start)}</Text>
                   <Text>Start: {selectedEvent.extendedProps.eventStart}</Text>
                   <Text>End: {selectedEvent.extendedProps.eventEnd}</Text>
-                  <Flex justifyContent="flex-end" mt={2}>
-                    <EditDeleteButtons onEdit={handleEditEvent} onDelete={handleDeleteEvent} />
+                  <Flex justifyContent={"flex-end"} mt={2}>
+                    <HStack>
+                      <Button colorPalette="blue" variant="solid" size="xs">
+                        Edit <CiEdit />
+                      </Button>
+                      <Button colorPalette="red" variant="solid" size="xs">
+                        Delete <CiTrash />
+                      </Button>
+                    </HStack>
                   </Flex>
                 </Box>
               ) : (
@@ -223,7 +216,7 @@ const CalendarPage = ({ isResized }) => {
 };
 
 CalendarPage.propTypes = {
-  isResized: PropTypes.bool
-}
+  isResized: PropTypes.bool,
+};
 
 export default CalendarPage;
