@@ -11,37 +11,8 @@ import {
 } from "../../components/snippets/dialog";
 import PropTypes from "prop-types";
 import { Field } from "../../components/snippets/field";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { forwardRef, useState } from "react";
 import { convertToUTC, getDateOnly, getHourAndMinuteOnly } from "../../utils/dateUtils";
-
-const DateInput = forwardRef(({ value, onClick, onChange }, ref) => (
-  <Input
-    ref={ref}
-    value={value}
-    onClick={onClick}
-    onChange={onChange}
-    placeholder="Select a date / time"
-  />
-));
-
-DateInput.displayName = "DateInput";
-
-const TimePicker = ({ selectedTime, onChange }) => {
-  return (
-    <DatePicker
-      selected={selectedTime}
-      onChange={onChange}
-      showTimeSelect
-      showTimeSelectOnly
-      timeIntervals={15}
-      timeCaption="Time"
-      dateFormat="h:mm aa"
-      customInput={<DateInput />}
-    />
-  );
-};
 
 const EventModal = ({ isOpen, onClose, onSave }) => {
   const [name, setName] = useState("");
