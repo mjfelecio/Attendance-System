@@ -16,6 +16,7 @@ import EventModal from "../features/events/EventModal";
 import useEventStore from "../stores/event.store.js";
 import { getDateOnly } from "../utils/dateUtils";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 const CalendarPage = ({ isResized }) => {
   const { createEvent, fetchEvents, editEvent } = useEventStore();
@@ -24,6 +25,7 @@ const CalendarPage = ({ isResized }) => {
   const [selectedEvent, setSelectedEvent] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const calendarRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleEventClick = (info) => {
     setIsEventSelected(true);
@@ -60,7 +62,7 @@ const CalendarPage = ({ isResized }) => {
       console.log("Success: " + message);
     }
 
-    const event = calendarRef.current.getEventById(eventId);
+    const event = calendarRef.current.getApi().getEventById(eventId);
     event.setProp("title", data.name);
     event.setStart(data.startTime);
     event.setExtendedProps("description", data.description);
@@ -107,10 +109,8 @@ const CalendarPage = ({ isResized }) => {
 
   // Updates the size of the calendar when the Sidebar opens or closes
   useEffect(() => {
-    console.log("isResized changed:", isResized);
     if (calendarRef.current) {
       setTimeout(() => {
-        console.log("Updating calendar size");
         calendarRef.current.getApi().updateSize();
       }, 500);
     }
@@ -190,14 +190,22 @@ const CalendarPage = ({ isResized }) => {
                 <Text>Select an event to view its details</Text>
               )}
             </Box>
-
+            <Button
+              bg="blue.800"
+              color="white"
+              _hover={{ bg: "blue.900" }}
+              w="full"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Create Event
+            </Button>
             {/* Take Attendance Button */}
             <Button
               bg="blue.800"
               color="white"
               _hover={{ bg: "blue.900" }}
               w="full"
-              onClick={() => (window.location.href = "/EventTakeAttendance")}
+              onClick={() => navigate("/EventTakeAttendance")}
             >
               Take Attendance
             </Button>
