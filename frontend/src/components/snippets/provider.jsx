@@ -1,12 +1,14 @@
-"use client";
 
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
+import { PortalManager } from "@chakra-ui/portal";
 import { ColorModeProvider } from "./color-mode";
 
-export function Provider(props) {
+export function Provider({ children }) {
   return (
     <ChakraProvider value={defaultSystem}>
-      <ColorModeProvider {...props} />
+      <PortalManager>
+        <ColorModeProvider>{children}</ColorModeProvider>
+      </PortalManager>
     </ChakraProvider>
   );
 }

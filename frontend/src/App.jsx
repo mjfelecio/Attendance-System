@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
@@ -6,31 +7,28 @@ import ManageList from "./pages/ManageList";
 import Settings from "./pages/Settings";
 import Navbar from "./components/layout/Navbar";
 import Sidebar from "./components/layout/Sidebar";
-import { useState } from "react";
 
-function App() {
+const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <Flex flexDirection="column" h="100vh">
+    <Flex direction="column" h="100vh">
       <Navbar toggleSidebar={toggleSidebar} />
-      <Flex flex={1} h="calc(100vh - 50px)" overflow="hidden" position="relative">
+      <Flex flex={1} h="calc(100vh - 50px)" overflow="hidden" pos="relative">
         <Sidebar isOpen={isSidebarOpen} />
         <Box
           flex={1}
           p={6}
           transition="margin-left 0.5s ease"
-          ml={isSidebarOpen ? "250px" : "0px"}
+          ml={isSidebarOpen ? "250px" : "0"}
           bg="white"
-          overflow={"auto"}
+          overflow="auto"
         >
           <Routes>
             <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/CalendarPage" element={<CalendarPage isResized={isSidebarOpen} />} />
+            <Route path="/CalendarPage" element={<CalendarPage />} />
             <Route path="/ManageList" element={<ManageList />} />
             <Route path="/Settings" element={<Settings />} />
           </Routes>
@@ -38,6 +36,6 @@ function App() {
       </Flex>
     </Flex>
   );
-}
+};
 
 export default App;
