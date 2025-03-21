@@ -24,7 +24,7 @@ export const fetchEvents = async (req, res) => {
     try {
         const events = await Event.findAll();
 
-        if (!events || events.length === 0) throw new Error("No event has been created");
+        if (!events || events.length === 0) throw new Error("No event found");
 
         res.status(201).json({
             success: true,
@@ -33,7 +33,7 @@ export const fetchEvents = async (req, res) => {
         });
     } catch (error) {
         if (error.message.includes("No event")) {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: false,
                 message: error.message,
             });
@@ -64,7 +64,7 @@ export const editEvent = async (req, res) => {
         });
     } catch (error) {
         if (error.message.includes("not found")) {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: false,
                 message: error.message,
             });
