@@ -6,7 +6,7 @@ import {
   MenuRadioItemGroup,
   MenuRoot,
   MenuTrigger,
-} from "../ui/Menu"
+} from "../ui/menu"
 import { useState } from "react"
 import { HiSortAscending } from "react-icons/hi"
 

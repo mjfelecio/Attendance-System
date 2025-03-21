@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -6,28 +6,16 @@ import {
   Text,
   Container,
   Flex,
-  Input,
-  Textarea,
-  useDisclosure,
 } from "@chakra-ui/react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-// Custom Dialog components (adjust import path as needed)
-import {
-  DialogRoot,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogCloseTrigger,
-  DialogBody,
-} from "../components/snippets/dialog";
 // Custom Edit/Delete buttons component
 import EditDeleteButtons from "../components/common/EditDeleteButtons";
 import EventModal from "../features/events/EventModal";
 import useEventStore from "../stores/event.store.js";
 import { getDateOnly } from "../utils/dateUtils";
+import PropTypes from "prop-types";
 
 const CalendarPage = ({ isResized }) => {
   const { createEvent, fetchEvents, editEvent } = useEventStore();
@@ -63,7 +51,6 @@ const CalendarPage = ({ isResized }) => {
   };
 
   const handleEditEvent = async (eventId, editedEvent) => {
-    // const eventId = selectedEvent.id;
     const { success, data, message } = editEvent(eventId, editedEvent);
 
     if (!success) {
@@ -80,6 +67,10 @@ const CalendarPage = ({ isResized }) => {
     event.setProp("eventStart", data.startTime);
     event.setProp("eventEnd", data.endTime);
   };
+
+  const handleDeleteEvent = async (eventId, deletedEvent) => {
+    
+  }
 
   // Loads previously created events to the calendar on page load
   useEffect(() => {
@@ -110,47 +101,20 @@ const CalendarPage = ({ isResized }) => {
     fetchEventsFromDB();
   }, [fetchEvents]);
 
+  useEffect(() => {
+    console.log("Calendar ref:", calendarRef.current);
+  }, []);
+
   // Updates the size of the calendar when the Sidebar opens or closes
   useEffect(() => {
+    console.log("isResized changed:", isResized);
     if (calendarRef.current) {
       setTimeout(() => {
+        console.log("Updating calendar size");
         calendarRef.current.getApi().updateSize();
       }, 500);
     }
-  }, []);
-
-  // When a date is clicked, set a sample event
-  const handleDateClick = (arg) => {
-    setSelectedEvent({ date: arg.dateStr, title: "BSP, Annual Election" });
-  };
-
-  // Create Event dialog form states
-  const [eventName, setEventName] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
-  const handleCreateEvent = () => {
-    console.log("New event created:", {
-      eventName,
-      description,
-      startDate,
-      endDate,
-    });
-
-    setEventName("");
-    setDescription("");
-    setStartDate("");
-    setEndDate("");
-  };
-
-  const handleEdit = () => {
-    console.log("Edit event:", selectedEvent);
-  };
-
-  const handleDelete = () => {
-    console.log("Delete event:", selectedEvent);
-  };
+  }, [isResized]);
 
   return (
     <Box
@@ -203,7 +167,6 @@ const CalendarPage = ({ isResized }) => {
             {selectedEvent ? (
               <Text fontSize="xl" fontWeight="bold">
                 Details of Selected Date
-                <Flex></Flex>
               </Text>
             ) : (
               <Text fontSize="xl" fontWeight="bold">
@@ -213,84 +176,20 @@ const CalendarPage = ({ isResized }) => {
 
             <Box flex={"1"} bg="white" color="black" w="full" p={4} borderRadius="md">
               {isEventSelected ? (
-                <>
-                  <Box>
+                <Box>
                   <Text>Name: {selectedEvent.title}</Text>
-                    <Text>Description: {selectedEvent.extendedProps.description}</Text>
+                  <Text>Description: {selectedEvent.extendedProps.description}</Text>
                   <Text>Date: {getDateOnly(selectedEvent.start)}</Text>
                   <Text>Start: {selectedEvent.extendedProps.eventStart}</Text>
-                    <Text>End: {selectedEvent.extendedProps.eventEnd}</Text>
+                  <Text>End: {selectedEvent.extendedProps.eventEnd}</Text>
                   <Flex justifyContent="flex-end" mt={2}>
-                    <EditDeleteButtons onEdit={handleEdit} onDelete={handleDelete} />
+                    <EditDeleteButtons onEdit={handleEditEvent} onDelete={handleDeleteEvent} />
                   </Flex>
-                </>
                 </Box>
               ) : (
                 <Text>Select an event to view its details</Text>
               )}
             </Box>
-
-            {/* Create Event Dialog */}
-            <DialogRoot size="lg" placement="center" motionPreset="slide-in-bottom">
-              <DialogTrigger asChild>
-                <Button
-              bg="blue.800"
-              color="white"
-              _hover={{ bg: "blue.900" }}
-              w="full"
-              onClick={() => setIsModalOpen(true)}
-            >
-                  Create Event
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create New Event</DialogTitle>
-                  <DialogCloseTrigger />
-                </DialogHeader>
-                <DialogBody>
-                  <VStack spacing={4}>
-                    <Box w="full">
-                      <Text mb={1}>Event Name</Text>
-                      <Input
-                        placeholder="Enter event name"
-                        value={eventName}
-                        onChange={(e) => setEventName(e.target.value)}
-                      />
-                    </Box>
-                    <Box w="full">
-                      <Text mb={1}>Description</Text>
-                      <Textarea
-                        placeholder="Enter event description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                      />
-                    </Box>
-                    <Box w="full">
-                      <Text mb={1}>Start Date</Text>
-                      <Input
-                        type="date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                      />
-                    </Box>
-                    <Box w="full">
-                      <Text mb={1}>End Date</Text>
-                      <Input
-                        type="date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                      />
-                    </Box>
-                    <Flex w="full" justify="flex-end" mt={4}>
-                      <Button colorScheme="blue" mr={3} onClick={handleCreateEvent} bg="blue.800">
-                        Create
-                      </Button>
-                    </Flex>
-                  </VStack>
-                </DialogBody>
-              </DialogContent>
-            </DialogRoot>
 
             {/* Take Attendance Button */}
             <Button
@@ -314,5 +213,9 @@ const CalendarPage = ({ isResized }) => {
     </Box>
   );
 };
+
+CalendarPage.propTypes = {
+  isResized: PropTypes.bool
+}
 
 export default CalendarPage;

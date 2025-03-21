@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
@@ -11,7 +11,7 @@ import Sidebar from "./components/layout/Sidebar";
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
     <Flex direction="column" h="100vh">
@@ -28,7 +28,7 @@ const App = () => {
         >
           <Routes>
             <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/CalendarPage" element={<CalendarPage />} />
+            <Route path="/CalendarPage" element={<CalendarPage isResized={isSidebarOpen} />} />
             <Route path="/ManageList" element={<ManageList />} />
             <Route path="/Settings" element={<Settings />} />
           </Routes>

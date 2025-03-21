@@ -1,4 +1,4 @@
-import { Button, Flex, Input } from "@chakra-ui/react";
+import { Button, Flex, HStack, Input } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -46,12 +46,13 @@ const TimePicker = ({ selectedTime, onChange }) => {
 const EventModal = ({ isOpen, onClose, onSave }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [eventDate, setEventDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
 
   const handleSave = () => {
-    const formattedDate = getDateOnly(eventDate);
+    const formattedDate = getDateOnly(startDate);
     const formattedStartTime = getHourAndMinuteOnly(startTime);
     const formattedEndTime = getHourAndMinuteOnly(endTime);
 
@@ -67,7 +68,7 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
     // Clear inputs
     setName("");
     setDescription("");
-    setEventDate("");
+    setStartDate("");
     setStartTime("");
     setEndTime("");
   };
@@ -77,35 +78,40 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
       <DialogContent bg={"white"}>
         <DialogHeader>
           <DialogTitle color={"black"} fontSize={"2xl"}>
-            New Event
+            Create New Event
           </DialogTitle>
         </DialogHeader>
         <DialogBody color={"black"}>
           <Field label="Name" required>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
+            <Input
+              placeholder="Enter event name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </Field>
           <Field label="Description">
             <Input
+              placeholder="Enter event description"
               size={"2xl"}
               fontSize={"sm"}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </Field>
-          <Field label="Date" required>
-            <DatePicker
-              selected={eventDate}
-              onChange={(date) => setEventDate(date)}
-              customInput={<DateInput />}
-              dateFormat="MMMM d, yyyy"
-            />{" "}
-          </Field>
+          <HStack>
+            <Field label="Start Date" required>
+              <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            </Field>
+            <Field label="End Date" required>
+              <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+            </Field>
+          </HStack>
           <Flex gap={"1"}>
             <Field label="Start" required>
-              <TimePicker selectedTime={startTime} onChange={setStartTime} />{" "}
+              <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
             </Field>
             <Field label="End" required>
-              <TimePicker selectedTime={endTime} onChange={setEndTime} />{" "}
+              <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
             </Field>
           </Flex>
         </DialogBody>
@@ -119,7 +125,7 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
             Save
           </Button>
         </DialogFooter>
-        <DialogCloseTrigger color={"black"} />
+        <DialogCloseTrigger color="black"/>
       </DialogContent>
     </DialogRoot>
   );
