@@ -53,6 +53,7 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
     setName("");
     setDescription("");
     setStartDate("");
+    setEndDate("");
     setStartTime("");
     setEndTime("");
   };

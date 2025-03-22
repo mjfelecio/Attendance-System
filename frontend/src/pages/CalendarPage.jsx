@@ -32,10 +32,10 @@ const CalendarPage = ({ isResized }) => {
     const { success, data, message } = await createEvent(newEvent);
 
     if (!success) {
-      console.log("Failed: " + message);
+      alert("Failed: " + message);
       return;
     } else {
-      console.log("Success: " + message);
+      alert("Success: " + message);
     }
 
     calendarRef.current.getApi().addEvent({
@@ -53,11 +53,11 @@ const CalendarPage = ({ isResized }) => {
     const { success, data, message } = await editEvent(eventId, editedEvent);
 
     if (!success) {
-      console.log("Failed: " + message);
+      alert("Failed: " + message);
       return;
     }
 
-    console.log("Success: " + message);
+    alert("Success: " + message);
 
     // Update the event in the calendar
     const event = calendarRef.current.getApi().getEventById(eventId);
@@ -82,6 +82,9 @@ const CalendarPage = ({ isResized }) => {
           : e
       )
     );
+
+    // Update the event details display
+    setSelectedEvent(event);
   };
 
   const handleDeleteEvent = async (eventId, deletedEvent) => {};
