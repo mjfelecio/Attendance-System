@@ -79,8 +79,8 @@ const CalendarPage = ({ isResized }) => {
               eventStart: data.startTime,
               eventEnd: data.endTime,
             }
-          : e
-      )
+          : e,
+      ),
     );
 
     // Update the event details display
@@ -242,6 +242,7 @@ const CalendarPage = ({ isResized }) => {
         </Flex>
       </Container>
 
+      {/* TODO: Fix form not being reset as a result of isEditing not updating before the modal is opened */}
       <EventModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
