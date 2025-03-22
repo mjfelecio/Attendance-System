@@ -1,5 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 
+
 const ManageList = () => {
   return (
     <Box
@@ -17,6 +18,6 @@ const ManageList = () => {
       </Text>
     </Box>
   );
-};
+};  
 
 export default ManageList;

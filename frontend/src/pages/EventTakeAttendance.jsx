@@ -52,7 +52,7 @@ const EventTakeAttendance = () => {
               <Table.Body>
                 {items.map((item) => (
                   <Table.Row key={item.id}>
-                    <Table.Cell>{item.lastName}</Table.Cell>
+                    <Table.Cell>{item.lastName},</Table.Cell>
                     <Table.Cell>{item.firstName}</Table.Cell>
                     <Table.Cell>{item.middleName}</Table.Cell>
                     <Table.Cell>{item.USN}</Table.Cell>
