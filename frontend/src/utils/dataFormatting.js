@@ -1,7 +1,7 @@
 
 // Restructures an event object from Full Calendar into something 
 // that is parse-able by the database
-function restructureEvent(event) {
+export function restructureEvent(event) {
   return {
     name: event.title,
     description: event.extendedProps?.description || "",

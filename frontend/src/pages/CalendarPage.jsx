@@ -9,15 +9,19 @@ import { getDateOnly } from "../utils/dateUtils";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { CiEdit, CiTrash } from "react-icons/ci";
+import { restructureEvent } from "../utils/dataFormatting";
 
 const CalendarPage = ({ isResized }) => {
   const { createEvent, fetchEvents, editEvent } = useEventStore();
+  const navigate = useNavigate();
+
   const [events, setEvents] = useState([]); // State to store events in the calendar
   const [isEventSelected, setIsEventSelected] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const calendarRef = useRef(null);
-  const navigate = useNavigate();
 
   const handleEventClick = (info) => {
     setIsEventSelected(true);
@@ -45,21 +49,39 @@ const CalendarPage = ({ isResized }) => {
   };
 
   const handleEditEvent = async (eventId, editedEvent) => {
-    const { success, data, message } = editEvent(eventId, editedEvent);
+    console.log(eventId);
+    const { success, data, message } = await editEvent(eventId, editedEvent);
 
     if (!success) {
       console.log("Failed: " + message);
       return;
-    } else {
-      console.log("Success: " + message);
     }
 
+    console.log("Success: " + message);
+
+    // Update the event in the calendar
     const event = calendarRef.current.getApi().getEventById(eventId);
     event.setProp("title", data.name);
     event.setExtendedProp("description", data.description);
-    event.setStart(data.startTime);
+    event.setStart(data.date);
     event.setExtendedProp("eventStart", data.startTime);
     event.setExtendedProp("eventEnd", data.endTime);
+
+    // Updates the events state with the updated data
+    setEvents((prevEvents) =>
+      prevEvents.map((e) =>
+        e.id === eventId
+          ? {
+              ...e,
+              title: data.name,
+              description: data.description,
+              start: data.date,
+              eventStart: data.startTime,
+              eventEnd: data.endTime,
+            }
+          : e
+      )
+    );
   };
 
   const handleDeleteEvent = async (eventId, deletedEvent) => {};
@@ -170,7 +192,15 @@ const CalendarPage = ({ isResized }) => {
                   <Text>End: {selectedEvent.extendedProps.eventEnd}</Text>
                   <Flex justifyContent={"flex-end"} mt={2}>
                     <HStack>
-                      <Button colorPalette="blue" variant="solid" size="xs">
+                      <Button
+                        colorPalette="blue"
+                        variant="solid"
+                        size="xs"
+                        onClick={() => {
+                          setIsEditing(true);
+                          setIsModalOpen(true);
+                        }}
+                      >
                         Edit <CiEdit />
                       </Button>
                       <Button colorPalette="red" variant="solid" size="xs">
@@ -188,7 +218,10 @@ const CalendarPage = ({ isResized }) => {
               color="white"
               _hover={{ bg: "blue.900" }}
               w="full"
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                setIsEditing(false);
+                setIsModalOpen(true);
+              }}
             >
               Create Event
             </Button>
@@ -209,7 +242,8 @@ const CalendarPage = ({ isResized }) => {
       <EventModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSave={(e) => handleAddEvent(e)}
+        onSave={(e) => (isEditing ? handleEditEvent(selectedEvent.id, e) : handleAddEvent(e))}
+        eventData={isEditing ? restructureEvent(selectedEvent) : {}} // Optional data from a selected event
       />
     </Box>
   );

@@ -12,7 +12,7 @@ import {
 import PropTypes from "prop-types";
 import { Field } from "../../components/snippets/field";
 import { useState, useEffect } from "react";
-import { getDateOnly, getHourAndMinuteOnly } from "../../utils/dateUtils";
+import { getDateOnly } from "../../utils/dateUtils";
 
 const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
   // Form data states initialized as empty strings
@@ -29,9 +29,10 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
       setName(eventData.name || "");
       setDescription(eventData.description || "");
       setStartDate(eventData.date ? getDateOnly(eventData.date) : ""); // Format date to "YYYY-MM-DD"
+      // TODO: Implement real endDate later, for now events are only 1 day
       setEndDate(eventData.date ? getDateOnly(eventData.date) : ""); // Format date to "YYYY-MM-DD"
-      setStartTime(eventData.startTime ? getHourAndMinuteOnly(eventData.startTime) : ""); // Format time to "HH:MM"
-      setEndTime(eventData.endTime ? getHourAndMinuteOnly(eventData.endTime) : ""); // Format time to "HH:MM"
+      setStartTime(eventData.startTime ? eventData.startTime : "");
+      setEndTime(eventData.endTime ? eventData.endTime : "");
     }
   }, [eventData]);
 
@@ -44,14 +45,16 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
       endTime: endTime,
     });
 
-    // Clear inputs
+    clearInputs();
+    onClose();
+  };
+
+  const clearInputs = () => {
     setName("");
     setDescription("");
     setStartDate("");
     setStartTime("");
     setEndTime("");
-
-    onClose();
   };
 
   return (
@@ -59,7 +62,7 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
       <DialogContent bg={"white"}>
         <DialogHeader>
           <DialogTitle color={"black"} fontSize={"2xl"}>
-            Create New Event
+            {eventData && Object.keys(eventData).length > 0 ? "Edit Event" : "Create New Event"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody color={"black"}>
@@ -104,7 +107,13 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
-            <Button colorPalette={"red"} onClick={() => onClose()}>
+            <Button
+              colorPalette={"red"}
+              onClick={() => {
+                clearInputs();
+                onClose();
+              }}
+            >
               Cancel
             </Button>
           </DialogActionTrigger>
@@ -125,7 +134,7 @@ EventModal.propTypes = {
   eventData: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
-    date: PropTypes.string, // "YYYY-MM-DD"
+    date: PropTypes.instanceOf(Date), // "YYYY-MM-DD"
     startTime: PropTypes.string, // "HH:MM"
     endTime: PropTypes.string, // "HH:MM"
   }),
