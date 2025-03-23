@@ -221,10 +221,9 @@ const CalendarPage = ({ isResized }) => {
               color="white"
               _hover={{ bg: "blue.900" }}
               w="full"
-              onClick={() => {
-                setIsEditing(false);
-                setIsModalOpen(true);
-              }}
+              onClick={() => 
+                setIsModalOpen(true)
+              }
             >
               Create Event
             </Button>
@@ -242,14 +241,17 @@ const CalendarPage = ({ isResized }) => {
         </Flex>
       </Container>
 
-      {/* TODO: Fix form not being reset as a result of isEditing not updating before the modal is opened */}
       <EventModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setIsEditing(false);
+        }}
         onSave={(e) => (isEditing ? handleEditEvent(selectedEvent.id, e) : handleAddEvent(e))}
         eventData={isEditing ? restructureEvent(selectedEvent) : {}} // Optional data from a selected event
       />
     </Box>
+    
   );
 };
 
