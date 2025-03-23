@@ -123,7 +123,7 @@ const CalendarPage = ({ isResized }) => {
     if (calendarRef.current) {
       setTimeout(() => {
         calendarRef.current.getApi().updateSize();
-      }, 500);
+      }, 300);
     }
   }, [isResized]);
 
