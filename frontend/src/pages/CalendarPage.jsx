@@ -12,7 +12,7 @@ import { CiEdit, CiTrash } from "react-icons/ci";
 import { restructureEvent } from "../utils/dataFormatting";
 
 const CalendarPage = ({ isResized }) => {
-  const { createEvent, fetchEvents, editEvent } = useEventStore();
+  const { createEvent, fetchEvents, editEvent, deleteEvent } = useEventStore();
   const navigate = useNavigate();
 
   const [events, setEvents] = useState([]); // State to store events in the calendar
@@ -49,7 +49,6 @@ const CalendarPage = ({ isResized }) => {
   };
 
   const handleEditEvent = async (eventId, editedEvent) => {
-    console.log(eventId);
     const { success, data, message } = await editEvent(eventId, editedEvent);
 
     if (!success) {
@@ -87,7 +86,29 @@ const CalendarPage = ({ isResized }) => {
     setSelectedEvent(event);
   };
 
-  const handleDeleteEvent = async (eventId, deletedEvent) => {};
+  const handleDeleteEvent = async (eventId) => {
+    if (!confirm("Are you sure you want to delete this event?")) {
+      return;
+    }
+
+    const { success, message } = await deleteEvent(eventId);
+
+    if (!success) {
+      alert("Failed: " + message);
+      return;
+    }
+
+    alert("Success: " + message);
+
+    const event = calendarRef.current.getApi().getEventById(eventId);
+    event.remove(); // Remove the event on the Calendar Storage
+
+    // Remove the event on the state to update the calendar
+    setEvents((prevEvents) => prevEvents.filter((e) => e.id !== eventId));
+
+    // Reset the event details display
+    setIsEventSelected(false);
+  };
 
   // Loads previously created events to the calendar on page load
   useEffect(() => {
@@ -123,7 +144,7 @@ const CalendarPage = ({ isResized }) => {
     if (calendarRef.current) {
       setTimeout(() => {
         calendarRef.current.getApi().updateSize();
-      }, 300);
+      }, 500);
     }
   }, [isResized]);
 
@@ -206,7 +227,12 @@ const CalendarPage = ({ isResized }) => {
                       >
                         Edit <CiEdit />
                       </Button>
-                      <Button colorPalette="red" variant="solid" size="xs">
+                      <Button
+                        colorPalette="red"
+                        variant="solid"
+                        size="xs"
+                        onClick={() => handleDeleteEvent(selectedEvent.id)}
+                      >
                         Delete <CiTrash />
                       </Button>
                     </HStack>
@@ -221,9 +247,7 @@ const CalendarPage = ({ isResized }) => {
               color="white"
               _hover={{ bg: "blue.900" }}
               w="full"
-              onClick={() => 
-                setIsModalOpen(true)
-              }
+              onClick={() => setIsModalOpen(true)}
             >
               Create Event
             </Button>
@@ -251,7 +275,6 @@ const CalendarPage = ({ isResized }) => {
         eventData={isEditing ? restructureEvent(selectedEvent) : {}} // Optional data from a selected event
       />
     </Box>
-    
   );
 };
 
