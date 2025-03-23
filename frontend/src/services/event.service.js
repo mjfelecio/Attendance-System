@@ -43,3 +43,8 @@ export const editEventApi = async (eventId, editedEvent) =>
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(editedEvent),
   });
+
+export const deleteEventApi = async (eventId) =>
+  apiCall(`/${eventId}`, {
+    method: "DELETE",
+  });
