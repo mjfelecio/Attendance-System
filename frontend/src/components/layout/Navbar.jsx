@@ -9,7 +9,7 @@ const Navbar = ({ toggleSidebar }) => {
   return (
     <Flex
       w={"100%"}
-      h="50px"
+      h="60px"
 			bg={"gray.200"}
       px={"12px"}
       alignItems="center"
@@ -17,7 +17,7 @@ const Navbar = ({ toggleSidebar }) => {
     >
       <HStack gap={2}>
         <Button variant="plain" onClick={toggleSidebar}>
-          <FontAwesomeIcon icon={faBars} size="2xl" color="red" />
+          <FontAwesomeIcon icon={faBars} size="2xl" color="black" />
         </Button>
         <Box>
           <InputGroup
