@@ -7,6 +7,7 @@ import ManageList from "./pages/ManageList";
 import Settings from "./pages/Settings";
 import Navbar from "./components/layout/Navbar";
 import Sidebar from "./components/layout/Sidebar";
+import EventTakeAttendance from "./pages/EventTakeAttendance";
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="/CalendarPage" element={<CalendarPage isResized={isSidebarOpen} />} />
             <Route path="/ManageList" element={<ManageList />} />
             <Route path="/Settings" element={<Settings />} />
+            <Route path="/EventTakeAttendance" element={<EventTakeAttendance />} />
           </Routes>
         </Box>
       </Flex>

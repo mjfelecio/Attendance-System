@@ -2,7 +2,7 @@ import { VStack, Button, Text, Icon } from "@chakra-ui/react";
 import { FaTachometerAlt, FaUserGraduate, FaCalendarCheck, FaChartLine } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const SButtons = () => {
+const SideBarButtons = () => {
   const navigate = useNavigate();
   return (
     <VStack spacing={4} align="stretch" bg="blue.900" color="white" h="100vh" p={4} boxShadow="lg">
@@ -71,4 +71,4 @@ const SButtons = () => {
   );
 };
 
-export default SButtons;
+export default SideBarButtons;
