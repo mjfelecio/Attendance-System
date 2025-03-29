@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import SButtons from "./SidebarButtons";
+import SideBarButtons from "./SidebarButtons";
 import { Box } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen }) => {
         damping: 18,
       }}
     >
-      <SButtons />
+      <SideBarButtons />
     </MotionBox>
   );
 };
