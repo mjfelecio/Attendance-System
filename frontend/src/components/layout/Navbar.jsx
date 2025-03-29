@@ -23,7 +23,7 @@ const Navbar = ({ toggleSidebar }) => {
           <InputGroup
             flex="1"
             endElement={
-              <FontAwesomeIcon icon={faSearch} size={"md"} color={"black"} />
+              <FontAwesomeIcon icon={faSearch} color={"black"} />
             }
           >
             <Input
