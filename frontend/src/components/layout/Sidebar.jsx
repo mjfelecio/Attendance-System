@@ -3,7 +3,7 @@ import SideBarButtons from "./SidebarButtons";
 import { Box } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 const Sidebar = ({ isOpen }) => {
   return (
