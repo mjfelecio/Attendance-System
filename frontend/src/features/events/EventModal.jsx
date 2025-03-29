@@ -18,8 +18,8 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
   // Form data states initialized as empty strings
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(getDateOnly(new Date()));
+  const [endDate, setEndDate] = useState(getDateOnly(new Date()));
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
@@ -33,6 +33,11 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
       setEndDate(eventData.date ? getDateOnly(eventData.date) : ""); // Format date to "YYYY-MM-DD"
       setStartTime(eventData.startTime ? eventData.startTime : "");
       setEndTime(eventData.endTime ? eventData.endTime : "");
+    }
+    else {
+      // Set the default 
+      setStartDate(getDateOnly(new Date()));
+      setEndDate(getDateOnly(new Date()));
     }
   }, [eventData]);
 
