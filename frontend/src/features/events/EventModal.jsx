@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, Input } from "@chakra-ui/react";
+import { Button, Flex, HStack, Input, Text } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -67,14 +67,14 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
           </DialogTitle>
         </DialogHeader>
         <DialogBody color={"black"}>
-          <Field label="Name" required>
+          <Field label="Name" required paddingBottom="10px">
             <Input
               placeholder="Enter event name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </Field>
-          <Field label="Description">
+          <Field label="Description" paddingBottom="10px">
             <Input
               placeholder="Enter event description"
               size={"2xl"}
@@ -83,11 +83,11 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </Field>
-          <HStack>
+          <HStack paddingBottom="10px">
             <Field label="Start Date" required>
               <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
             </Field>
-            <Field label="End Date" required>
+            <Field label="End Date">
               <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
             </Field>
           </HStack>
