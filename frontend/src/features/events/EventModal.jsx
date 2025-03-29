@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import { Field } from "../../components/snippets/field";
 import { useState, useEffect } from "react";
 import { getDateOnly } from "../../utils/dateUtils";
+import { validateEventInput } from "../../utils/validation";
 
 const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
   // Form data states initialized as empty strings
@@ -35,21 +36,27 @@ const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
       setEndTime(eventData.endTime ? eventData.endTime : "");
     }
     else {
-      // Set the default 
+      // Set today as the default date
       setStartDate(getDateOnly(new Date()));
       setEndDate(getDateOnly(new Date()));
     }
   }, [eventData]);
 
   const handleSave = () => {
-    onSave({
+    const eventInputs = {
       name,
       description,
       date: startDate,
       startTime: startTime,
       endTime: endTime,
-    });
+    }
 
+    if (!validateEventInput(eventInputs)) {
+      alert("Invalid input: Please check your input again")
+      return;
+    }
+
+    onSave(eventInputs);
     clearInputs();
     onClose();
   };
