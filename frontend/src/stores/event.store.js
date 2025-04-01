@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { createEventApi, editEventApi, fetchEventsApi } from "../services/event.service.js";
+import { createEventApi, deleteEventApi, editEventApi, fetchEventsApi } from "../services/event.service.js";
 
 const useEventStore = create((set) => ({
   events: [],
@@ -40,6 +40,21 @@ const useEventStore = create((set) => ({
         }));
       }
       return { success, data, message };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  },
+
+  deleteEvent: async (eventId) => {
+    const { success, message } = await deleteEventApi(eventId);
+    try {
+      if (success) {
+        set((state) => ({
+          events: state.events.filter((e) => e.id !== eventId),
+        }));
+      }
+
+      return { success, message }
     } catch (error) {
       return { success: false, message: error.message };
     }

@@ -11,64 +11,61 @@ import {
 } from "../../components/snippets/dialog";
 import PropTypes from "prop-types";
 import { Field } from "../../components/snippets/field";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { forwardRef, useState } from "react";
-import { convertToUTC, getDateOnly, getHourAndMinuteOnly } from "../../utils/dateUtils";
+import { useState, useEffect } from "react";
+import { getDateOnly } from "../../utils/dateUtils";
+import { validateEventInput } from "../../utils/validation";
 
-const DateInput = forwardRef(({ value, onClick, onChange }, ref) => (
-  <Input
-    ref={ref}
-    value={value}
-    onClick={onClick}
-    onChange={onChange}
-    placeholder="Select a date / time"
-  />
-));
-
-DateInput.displayName = "DateInput";
-
-const TimePicker = ({ selectedTime, onChange }) => {
-  return (
-    <DatePicker
-      selected={selectedTime}
-      onChange={onChange}
-      showTimeSelect
-      showTimeSelectOnly
-      timeIntervals={15}
-      timeCaption="Time"
-      dateFormat="h:mm aa"
-      customInput={<DateInput />}
-    />
-  );
-};
-
-const EventModal = ({ isOpen, onClose, onSave }) => {
+const EventModal = ({ isOpen, onClose, onSave, eventData }) => {
+  // Form data states initialized as empty strings
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const [startDate, setStartDate] = useState(getDateOnly(new Date()));
+  const [endDate, setEndDate] = useState(getDateOnly(new Date()));
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+
+  // Effect to populate the form data if eventData is provided
+  useEffect(() => {
+    if (eventData && Object.keys(eventData).length > 0) {
+      setName(eventData.name || "");
+      setDescription(eventData.description || "");
+      setStartDate(eventData.date ? getDateOnly(eventData.date) : ""); // Format date to "YYYY-MM-DD"
+      // TODO: Implement real endDate later, for now events are only 1 day
+      setEndDate(eventData.date ? getDateOnly(eventData.date) : ""); // Format date to "YYYY-MM-DD"
+      setStartTime(eventData.startTime ? eventData.startTime : "");
+      setEndTime(eventData.endTime ? eventData.endTime : "");
+    }
+    else {
+      // Set today as the default date
+      setStartDate(getDateOnly(new Date()));
+      setEndDate(getDateOnly(new Date()));
+    }
+  }, [eventData]);
 
   const handleSave = () => {
-    const formattedDate = getDateOnly(startDate);
-    const formattedStartTime = getHourAndMinuteOnly(startTime);
-    const formattedEndTime = getHourAndMinuteOnly(endTime);
-
-    onSave({
+    const eventInputs = {
       name,
       description,
-      date: formattedDate,
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
-    });
-    onClose();
+      date: startDate,
+      startTime: startTime,
+      endTime: endTime,
+    }
 
-    // Clear inputs
+    if (!validateEventInput(eventInputs)) {
+      alert("Invalid input: Please check your input again")
+      return;
+    }
+
+    onSave(eventInputs);
+    clearInputs();
+    onClose();
+  };
+
+  const clearInputs = () => {
     setName("");
     setDescription("");
     setStartDate("");
+    setEndDate("");
     setStartTime("");
     setEndTime("");
   };
@@ -78,18 +75,18 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
       <DialogContent bg={"white"}>
         <DialogHeader>
           <DialogTitle color={"black"} fontSize={"2xl"}>
-            Create New Event
+            {eventData && Object.keys(eventData).length > 0 ? "Edit Event" : "Create New Event"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody color={"black"}>
-          <Field label="Name" required>
+          <Field label="Name" required paddingBottom="10px">
             <Input
               placeholder="Enter event name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </Field>
-          <Field label="Description">
+          <Field label="Description" paddingBottom="10px">
             <Input
               placeholder="Enter event description"
               size={"2xl"}
@@ -98,34 +95,46 @@ const EventModal = ({ isOpen, onClose, onSave }) => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </Field>
-          <HStack>
+          <HStack paddingBottom="10px">
             <Field label="Start Date" required>
               <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
             </Field>
-            <Field label="End Date" required>
+            <Field label="End Date">
               <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
             </Field>
           </HStack>
-          <Flex gap={"1"}>
-            <Field label="Start" required>
-              <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-            </Field>
-            <Field label="End" required>
-              <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-            </Field>
-          </Flex>
+          <HStack>
+            <Flex gap={"1"}>
+              <Field label="Start" required>
+                <Input
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                />
+              </Field>
+              <Field label="End" required>
+                <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+              </Field>
+            </Flex>
+          </HStack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
-            <Button colorPalette={"red"} onClick={() => onClose()}>
+            <Button
+              colorPalette={"red"}
+              onClick={() => {
+                clearInputs();
+                onClose();
+              }}
+            >
               Cancel
             </Button>
           </DialogActionTrigger>
-          <Button onClick={() => handleSave()} colorPalette={"blue"}>
+          <Button colorPalette={"blue"} onClick={() => handleSave()}>
             Save
           </Button>
         </DialogFooter>
-        <DialogCloseTrigger color="black"/>
+        <DialogCloseTrigger color="black" />
       </DialogContent>
     </DialogRoot>
   );
@@ -135,6 +144,13 @@ EventModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onSave: PropTypes.func,
+  eventData: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    date: PropTypes.instanceOf(Date), // "YYYY-MM-DD"
+    startTime: PropTypes.string, // "HH:MM"
+    endTime: PropTypes.string, // "HH:MM"
+  }),
 };
 
 export default EventModal;

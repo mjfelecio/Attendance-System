@@ -1,28 +1,26 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Box,
-  Button,
-  VStack,
-  Text,
-  Container,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Button, VStack, Text, Container, Flex, HStack } from "@chakra-ui/react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-// Custom Edit/Delete buttons component
-import EditDeleteButtons from "../components/common/EditDeleteButtons";
 import EventModal from "../features/events/EventModal";
 import useEventStore from "../stores/event.store.js";
 import { getDateOnly } from "../utils/dateUtils";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
+import { CiEdit, CiTrash } from "react-icons/ci";
+import { restructureEvent } from "../utils/dataFormatting";
 
 const CalendarPage = ({ isResized }) => {
-  const { createEvent, fetchEvents, editEvent } = useEventStore();
-  const [events, setEvents] = useState([]);
+  const { createEvent, fetchEvents, editEvent, deleteEvent } = useEventStore();
+  const navigate = useNavigate();
+
+  const [events, setEvents] = useState([]); // State to store events in the calendar
   const [isEventSelected, setIsEventSelected] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const calendarRef = useRef(null);
 
   const handleEventClick = (info) => {
@@ -34,43 +32,83 @@ const CalendarPage = ({ isResized }) => {
     const { success, data, message } = await createEvent(newEvent);
 
     if (!success) {
-      console.log("Failed: " + message);
+      alert("Failed: " + message);
       return;
     } else {
-      console.log("Success: " + message);
+      alert("Success: " + message);
     }
 
     calendarRef.current.getApi().addEvent({
       id: data.id,
       title: data.name,
-      start: data.date,
       description: data.description,
+      start: data.date,
       eventStart: data.startTime,
       eventEnd: data.endTime,
     });
   };
 
   const handleEditEvent = async (eventId, editedEvent) => {
-    const { success, data, message } = editEvent(eventId, editedEvent);
+    const { success, data, message } = await editEvent(eventId, editedEvent);
 
     if (!success) {
-      console.log("Failed: " + message);
+      alert("Failed: " + message);
       return;
-    } else {
-      console.log("Success: " + message);
     }
 
-    const event = calendarRef.current.getEventById(eventId);
+    alert("Success: " + message);
+
+    // Update the event in the calendar
+    const event = calendarRef.current.getApi().getEventById(eventId);
     event.setProp("title", data.name);
-    event.setStart(data.startTime);
-    event.setExtendedProps("description", data.description);
-    event.setProp("eventStart", data.startTime);
-    event.setProp("eventEnd", data.endTime);
+    event.setExtendedProp("description", data.description);
+    event.setStart(data.date);
+    event.setExtendedProp("eventStart", data.startTime);
+    event.setExtendedProp("eventEnd", data.endTime);
+
+    // Updates the events state with the updated data
+    setEvents((prevEvents) =>
+      prevEvents.map((e) =>
+        e.id === eventId
+          ? {
+              ...e,
+              title: data.name,
+              description: data.description,
+              start: data.date,
+              eventStart: data.startTime,
+              eventEnd: data.endTime,
+            }
+          : e,
+      ),
+    );
+
+    // Update the event details display
+    setSelectedEvent(event);
   };
 
-  const handleDeleteEvent = async (eventId, deletedEvent) => {
-    
-  }
+  const handleDeleteEvent = async (eventId) => {
+    if (!confirm("Are you sure you want to delete this event?")) {
+      return;
+    }
+
+    const { success, message } = await deleteEvent(eventId);
+
+    if (!success) {
+      alert("Failed: " + message);
+      return;
+    }
+
+    alert("Success: " + message);
+
+    const event = calendarRef.current.getApi().getEventById(eventId);
+    event.remove(); // Remove the event on the Calendar Storage
+
+    // Remove the event on the state to update the calendar
+    setEvents((prevEvents) => prevEvents.filter((e) => e.id !== eventId));
+
+    // Reset the event details display
+    setIsEventSelected(false);
+  };
 
   // Loads previously created events to the calendar on page load
   useEffect(() => {
@@ -101,16 +139,10 @@ const CalendarPage = ({ isResized }) => {
     fetchEventsFromDB();
   }, [fetchEvents]);
 
-  useEffect(() => {
-    console.log("Calendar ref:", calendarRef.current);
-  }, []);
-
   // Updates the size of the calendar when the Sidebar opens or closes
   useEffect(() => {
-    console.log("isResized changed:", isResized);
     if (calendarRef.current) {
       setTimeout(() => {
-        console.log("Updating calendar size");
         calendarRef.current.getApi().updateSize();
       }, 500);
     }
@@ -164,13 +196,13 @@ const CalendarPage = ({ isResized }) => {
             borderRadius="md"
             boxShadow="md"
           >
-            {selectedEvent ? (
+            {isEventSelected ? (
               <Text fontSize="xl" fontWeight="bold">
-                Details of Selected Date
+                Details of Selected Event
               </Text>
             ) : (
               <Text fontSize="xl" fontWeight="bold">
-                Details of Selected Event
+                Details of Selected Date
               </Text>
             )}
 
@@ -182,22 +214,50 @@ const CalendarPage = ({ isResized }) => {
                   <Text>Date: {getDateOnly(selectedEvent.start)}</Text>
                   <Text>Start: {selectedEvent.extendedProps.eventStart}</Text>
                   <Text>End: {selectedEvent.extendedProps.eventEnd}</Text>
-                  <Flex justifyContent="flex-end" mt={2}>
-                    <EditDeleteButtons onEdit={handleEditEvent} onDelete={handleDeleteEvent} />
+                  <Flex justifyContent={"flex-end"} mt={2}>
+                    <HStack>
+                      <Button
+                        colorPalette="blue"
+                        variant="solid"
+                        size="xs"
+                        onClick={() => {
+                          setIsEditing(true);
+                          setIsModalOpen(true);
+                        }}
+                      >
+                        Edit <CiEdit />
+                      </Button>
+                      <Button
+                        colorPalette="red"
+                        variant="solid"
+                        size="xs"
+                        onClick={() => handleDeleteEvent(selectedEvent.id)}
+                      >
+                        Delete <CiTrash />
+                      </Button>
+                    </HStack>
                   </Flex>
                 </Box>
               ) : (
                 <Text>Select an event to view its details</Text>
               )}
             </Box>
-
+            <Button
+              bg="blue.800"
+              color="white"
+              _hover={{ bg: "blue.900" }}
+              w="full"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Create Event
+            </Button>
             {/* Take Attendance Button */}
             <Button
               bg="blue.800"
               color="white"
               _hover={{ bg: "blue.900" }}
               w="full"
-              onClick={() => (window.location.href = "/EventTakeAttendance")}
+              onClick={() => navigate("/EventTakeAttendance")}
             >
               Take Attendance
             </Button>
@@ -207,15 +267,19 @@ const CalendarPage = ({ isResized }) => {
 
       <EventModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={(e) => handleAddEvent(e)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setIsEditing(false);
+        }}
+        onSave={(e) => (isEditing ? handleEditEvent(selectedEvent.id, e) : handleAddEvent(e))}
+        eventData={isEditing ? restructureEvent(selectedEvent) : {}} // Optional data from a selected event
       />
     </Box>
   );
 };
 
 CalendarPage.propTypes = {
-  isResized: PropTypes.bool
-}
+  isResized: PropTypes.bool,
+};
 
 export default CalendarPage;
