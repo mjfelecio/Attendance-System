@@ -21,9 +21,10 @@ const ManageList = () => {
       <Flex justify="space-between" align="center" mb={4}>
         <Heading color="black">Students List</Heading>
 
-        <Flex align="center" gap={2}>
-          <SearchBar />
+        <Flex align="center" gap={4}>
           <SortBy />
+          <SearchBar />
+          
         </Flex>
       </Flex>
 
