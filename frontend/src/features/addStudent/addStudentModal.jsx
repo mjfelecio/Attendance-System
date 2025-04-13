@@ -1,87 +1,191 @@
-"use client"
+"use client";
 
 import {
-  Dialog,
-  Field,
-  Input,
   Button,
-  Portal,
+  Flex,
+  HStack,
+  Input,
   Stack,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogRoot
+} from "../../components/snippets/dialog";
+import { Field } from "../../components/snippets/field";
+import PropTypes from "prop-types";
+import { useState, useEffect, useRef } from "react";
 
-const addStudentModal = () => {
-  const ref = useRef<HTMLInputElement>(null);
+const AddStudentModal = ({ isOpen, onClose, onSave, studentData }) => {
+  const ref = useRef(null);
+
+  const [id, setId] = useState(""); // USN (Primary Key)
+  const [lastname, setLastName] = useState(""); // Student Name
+  const [firstname, setFirstName] = useState(""); // Student Name
+  const [middlename, setMiddleName] = useState(""); // Student Name
+  const [strandProgram, setStrandProgram] = useState(""); // Strand Program (Animation, BSIT, etc.)
+  const [section, setSection] = useState(""); // Section Name (e.g., Gumamela)
+  const [yearLevel, setYearLevel] = useState(""); // Year level (e.g., 2nd year, 11th grader)
+  const [schoolLevel, setSchoolLevel] = useState(""); // School level (e.g., SHS, College)
+
+  useEffect(() => {
+    if (studentData) {
+      setId(studentData.id || "");
+      setLastName(studentData.name || "");
+      setFirstName(studentData.name || "");
+      setMiddleName(studentData.name || "");
+      setStrandProgram(studentData.strandProgram || "");
+      setSection(studentData.section || "");
+      setYearLevel(studentData.yearLevel || "");
+      setSchoolLevel(studentData.schoolLevel || "");
+    } else {
+      clearFields();
+    }
+  }, [studentData]);
+
+  const handleSave = () => {
+    const student = {
+      id,
+      lastname,
+      firstname,
+      middlename,
+      strandProgram,
+      section,
+      yearLevel,
+      schoolLevel,
+    };
+
+    if (!id || !lastname || !firstname || !middlename || !strandProgram || !section || !yearLevel || !schoolLevel) {
+      alert("Please fill in all required fields.");
+      return; 
+    }
+
+    onSave?.(student);
+    clearFields();
+    onClose();
+  };
+
+  const clearFields = () => {
+    setId("");
+    setLastName("");
+    setFirstName("");
+    setMiddleName("");
+    setStrandProgram("");
+    setSection("");
+    setYearLevel("");
+    setSchoolLevel("");
+  };
 
   return (
-    <Dialog.Root initialFocusEl={() => ref.current}>
-      <Dialog.Trigger asChild>
-        <Button
-          variant="ghost"
-          color="black"
-          position="absolute"
-          top="10px"
-          right="10px"
-          zIndex={1}
-          _hover={{ bg: "gray.100" }}
-          aria-label="Add Student"
-        >
-          <i className="icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="black"
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
+    <DialogRoot open={isOpen} onOpenChange={onClose} size="md">
+      <DialogContent bg="white">
+        <DialogHeader>
+          <DialogTitle color="black" fontSize="2xl">
+            {studentData ? "Edit Student" : "Add New Student"}
+          </DialogTitle>
+        </DialogHeader>
+        <DialogBody color="black">
+          <Stack gap="4">
+            <Field label="USN (ID)" required>
+              <Input
+                ref={ref}
+                placeholder="Enter USN"
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+              />
+            </Field>
+            <Field label="Student Last Name" required>
+              <Input
+                placeholder="Enter Last Name"
+                value={lastname}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </Field>
+            <Field label="Student First Name" required>
+              <Input
+                placeholder="Enter First Name"
+                value={firstname}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </Field>
+            <Field label="Student Middle Name" required>
+              <Input
+                placeholder="Enter Middle Name"
+                value={middlename}
+                onChange={(e) => setMiddleName(e.target.value)}
+              />
+            </Field>
+            <Field label="Strand Program" required>
+              <Input
+                placeholder="Enter Strand Program (e.g., Animation, BSIT)"
+                value={strandProgram}
+                onChange={(e) => setStrandProgram(e.target.value)}
+              />
+            </Field>
+            <Field label="Section" required>
+              <Input
+                placeholder="Enter Section (e.g., Gumamela)"
+                value={section}
+                onChange={(e) => setSection(e.target.value)}
+              />
+            </Field>
+            <Field label="Year Level" required>
+              <Input
+                placeholder="Enter Year Level (e.g., 2nd year, 11th grade)"
+                value={yearLevel}
+                onChange={(e) => setYearLevel(e.target.value)}
+              />
+            </Field>
+            <Field label="School Level" required>
+              <Input
+                placeholder="Enter School Level (e.g., SHS, College)"
+                value={schoolLevel}
+                onChange={(e) => setSchoolLevel(e.target.value)}
+              />
+            </Field>
+          </Stack>
+        </DialogBody>
+        <DialogFooter>
+          <DialogActionTrigger asChild>
+            <Button
+              variant="outline"
+              onClick={() => {
+                clearFields();
+                onClose();
+              }}
             >
-              <path d="M15 14c-2.33 0-7 1.17-7 3.5V20h14v-2.5c0-2.33-4.67-3.5-7-3.5zm0-2c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-6 4v1H3v-1c0-1.66 3.58-2.5 6-2.5s6 .84 6 2.5zm3-6c0-1.66-1.34-3-3-3S6 8.34 6 10s1.34 3 3 3 3-1.34 3-3z" />
-            </svg>
-          </i>
-        </Button>
-      </Dialog.Trigger>
-      <Portal>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-          <Dialog.Content>
-            <Dialog.Header>
-              <Dialog.Title>Add Student</Dialog.Title>
-            </Dialog.Header>
-            <Dialog.Body pb="4">
-              <Stack gap="4">
-                <Field.Root>
-                  <Field.Label>USN</Field.Label>
-                  <Input placeholder="Enter USN" />
-                </Field.Root>
-                <Field.Root>
-                  <Field.Label>Last Name</Field.Label>
-                  <Input ref={ref} placeholder="Enter Last Name" />
-                </Field.Root>
-                <Field.Root>
-                  <Field.Label>First Name</Field.Label>
-                  <Input placeholder="Enter First Name" />
-                </Field.Root>
-                <Field.Root>
-                  <Field.Label>Middle Name</Field.Label>
-                  <Input placeholder="Enter Middle Name" />
-                </Field.Root>
-                <Field.Root>
-                  <Field.Label>Course/Strand</Field.Label>
-                  <Input placeholder="Enter Course/Strand" />
-                </Field.Root>
-              </Stack>
-            </Dialog.Body>
-            <Dialog.Footer>
-              <Dialog.ActionTrigger asChild>
-                <Button variant="outline">Cancel</Button>
-              </Dialog.ActionTrigger>
-              <Button colorScheme="blue">Import CSV</Button>
-              <Button colorScheme="green">Save</Button>
-            </Dialog.Footer>
-          </Dialog.Content>
-        </Dialog.Positioner>
-      </Portal>
-    </Dialog.Root>
+              Cancel
+            </Button>
+          </DialogActionTrigger>
+          <Button colorScheme="green" onClick={handleSave}>
+            Save
+          </Button>
+        </DialogFooter>
+        <DialogCloseTrigger color="black" />
+      </DialogContent>
+    </DialogRoot>
   );
 };
 
-export default addStudentModal;
+AddStudentModal.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  onSave: PropTypes.func,
+  studentData: PropTypes.shape({
+    id: PropTypes.string,
+    lastname: PropTypes.string,
+    firstname: PropTypes.string,
+    middlename: PropTypes.string,
+    strandProgram: PropTypes.string,
+    section: PropTypes.string,
+    yearLevel: PropTypes.string,
+    schoolLevel: PropTypes.string,
+  }),
+};
+
+export default AddStudentModal;
