@@ -16,7 +16,7 @@ const SortBy = () => {
     <MenuRoot>
       <MenuTrigger asChild>
         <Button variant="outline" size="sm">
-          <HiSortAscending /> Sort
+          <HiSortAscending /> Filter
         </Button>
       </MenuTrigger>
       <MenuContent minW="10rem">
@@ -27,7 +27,6 @@ const SortBy = () => {
           <MenuRadioItem value="col">College</MenuRadioItem>
           <MenuRadioItem value="shs">Senior High School</MenuRadioItem>
           <MenuRadioItem value="hos">House</MenuRadioItem>
-          <MenuRadioItem value="dpt">Department</MenuRadioItem>
         </MenuRadioItemGroup>
       </MenuContent>
     </MenuRoot>
