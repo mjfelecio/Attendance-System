@@ -84,7 +84,7 @@ const ManageList = () => {
           <Table.Body>
             {students.map((student) => (
               <Table.Row
-                key={student.id}
+                key={student.usn}
                 _hover={{ bg: "gray.100", cursor: "pointer" }}
                 onClick={() => {
                   setSelectedStudent(student);

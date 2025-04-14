@@ -24,7 +24,7 @@ import { useState, useEffect, useRef } from "react";
 const AddStudentModal = ({ isOpen, onClose, onSave, studentData }) => {
   const ref = useRef(null);
 
-  const [id, setId] = useState(""); // USN (Primary Key)
+  const [usn, setUsn] = useState(""); // USN (Primary Key)
   const [lastname, setLastName] = useState(""); // Student Name
   const [firstname, setFirstName] = useState(""); // Student Name
   const [middlename, setMiddleName] = useState(""); // Student Name
@@ -35,10 +35,10 @@ const AddStudentModal = ({ isOpen, onClose, onSave, studentData }) => {
 
   useEffect(() => {
     if (studentData) {
-      setId(studentData.id || "");
-      setLastName(studentData.name || "");
-      setFirstName(studentData.name || "");
-      setMiddleName(studentData.name || "");
+      setUsn(studentData.usn || "");
+      setLastName(studentData.lastname || "");
+      setFirstName(studentData.firstname || "");
+      setMiddleName(studentData.middlename || "");
       setStrandProgram(studentData.strandProgram || "");
       setSection(studentData.section || "");
       setYearLevel(studentData.yearLevel || "");
@@ -50,7 +50,7 @@ const AddStudentModal = ({ isOpen, onClose, onSave, studentData }) => {
 
   const handleSave = () => {
     const student = {
-      id,
+      usn,
       lastname,
       firstname,
       middlename,
@@ -60,7 +60,7 @@ const AddStudentModal = ({ isOpen, onClose, onSave, studentData }) => {
       schoolLevel,
     };
 
-    if (!id || !lastname || !firstname || !middlename || !strandProgram || !section || !yearLevel || !schoolLevel) {
+    if (!usn || !lastname || !firstname || !middlename || !strandProgram || !section || !yearLevel || !schoolLevel) {
       alert("Please fill in all required fields.");
       return; 
     }
@@ -71,7 +71,7 @@ const AddStudentModal = ({ isOpen, onClose, onSave, studentData }) => {
   };
 
   const clearFields = () => {
-    setId("");
+    setUsn("");
     setLastName("");
     setFirstName("");
     setMiddleName("");
@@ -95,8 +95,8 @@ const AddStudentModal = ({ isOpen, onClose, onSave, studentData }) => {
               <Input
                 ref={ref}
                 placeholder="Enter USN"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
+                value={usn}
+                onChange={(e) => setUsn(e.target.value)}
               />
             </Field>
             <Field label="Student Last Name" required>
