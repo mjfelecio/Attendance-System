@@ -48,20 +48,25 @@ const ManageList = () => {
         overflowY="auto"
         position="relative"
       >
-        <IconButton
-          aria-label="Add Student"
-          icon={<IoPersonAddOutline />}
-          onClick={() => {
-            setSelectedStudent(null);
-            setIsModalOpen(true);
-          }}
-          variant="ghost"
-          color="black"
-          position="absolute"
-          top="10px"
-          right="10px"
-          _hover={{ bg: "gray.100" }}
-        />
+        <IconButton 
+        aria-label="Add Student"
+        variant="ghost"
+        key="ghost"
+        color="black" 
+        onClick={() => {
+          setSelectedStudent(null);
+          setIsModalOpen(true);
+        }}
+        
+        position="absolute"
+        top="10px"
+        right="10px"
+        _hover={{ bg: "gray.100" }}
+        >
+          <IoPersonAddOutline />
+        </IconButton>
+          
+          
 
         <Table.Root size="sm" striped>
           <Table.Header>
