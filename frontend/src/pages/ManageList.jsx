@@ -4,8 +4,11 @@ import {
   Heading,
   Flex,
   IconButton,
-  Button  
+  ButtonGroup,
+  Center,
+  Pagination
 } from "@chakra-ui/react";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
 import { IoPersonAddOutline } from "react-icons/io5";
 import { useState } from "react";
 
@@ -17,7 +20,7 @@ const ManageList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
-  const students = Array.from({ length: 17 }, (_, i) => ({
+  const students = Array.from({ length: 14 }, (_, i) => ({
     id: i + 1,
     usn: "213131376712",
     lastName: "Gasacao",
@@ -117,6 +120,31 @@ const ManageList = () => {
           setIsModalOpen(false);
         }}
       />
+      <Center>
+      <Pagination.Root count={20} pageSize={2} defaultPage={1}>
+      <ButtonGroup variant="outline" size="sm">
+        <Pagination.PrevTrigger asChild>
+          <IconButton>
+            <LuChevronLeft />
+          </IconButton>
+        </Pagination.PrevTrigger>
+
+        <Pagination.Items
+          render={(page) => (
+            <IconButton variant={{ base: "outline", _selected: "solid" }}>
+              {page.value}
+            </IconButton>
+          )}
+        />
+
+        <Pagination.NextTrigger asChild>
+          <IconButton>
+            <LuChevronRight />
+          </IconButton>
+        </Pagination.NextTrigger>
+      </ButtonGroup>
+      </Pagination.Root>
+      </Center>
     </Box>
   );
 };
