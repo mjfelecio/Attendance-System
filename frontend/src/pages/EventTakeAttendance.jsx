@@ -1,4 +1,5 @@
-import { Box, Heading, Table, Flex } from "@chakra-ui/react";
+import { Box, Heading, Table, Flex, Pagination, Center, ButtonGroup, IconButton } from "@chakra-ui/react";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
 import ActionsButtons from "../components/common/ActionsButtons";
 import SearchBar from "../components/common/SearchBar";
 import SortBy from "../components/common/SortBy";
@@ -85,63 +86,7 @@ const EventTakeAttendance = () => {
       middleName: "Otlang",
       USN: "213131376712",
       Actions: <ActionsButtons />,
-    },
-    {
-      id: 11,
-      lastName: "Gasacao",
-      firstName: "John Ashly",
-      middleName: "Otlang",
-      USN: "213131376712",
-      Actions: <ActionsButtons />,
-    },
-    {
-      id: 12,
-      lastName: "Gasacao",
-      firstName: "John Ashly",
-      middleName: "Otlang",
-      USN: "213131376712",
-      Actions: <ActionsButtons />,
-    },
-    {
-      id: 13,
-      lastName: "Gasacao",
-      firstName: "John Ashly",
-      middleName: "Otlang",
-      USN: "213131376712",
-      Actions: <ActionsButtons />,
-    },
-    {
-      id: 14,
-      lastName: "Gasacao",
-      firstName: "John Ashly",
-      middleName: "Otlang",
-      USN: "213131376712",
-      Actions: <ActionsButtons />,
-    },
-    {
-      id: 15,
-      lastName: "Gasacao",
-      firstName: "John Ashly",
-      middleName: "Otlang",
-      USN: "213131376712",
-      Actions: <ActionsButtons />,
-    },
-    {
-      id: 16,
-      lastName: "Gasacao",
-      firstName: "John Ashly",
-      middleName: "Otlang",
-      USN: "213131376712",
-      Actions: <ActionsButtons />,
-    },
-    {
-      id: 17,
-      lastName: "Gasacao",
-      firstName: "John Ashly",
-      middleName: "Otlang",
-      USN: "213131376712",
-      Actions: <ActionsButtons />,
-    },
+    }
   ];
 
   return (
@@ -193,6 +138,31 @@ const EventTakeAttendance = () => {
           </Table.Body>
         </Table.Root>
       </Box>
+      <Center>
+      <Pagination.Root count={20} pageSize={2} defaultPage={1}>
+      <ButtonGroup variant="outline" size="sm">
+        <Pagination.PrevTrigger asChild>
+          <IconButton>
+            <LuChevronLeft />
+          </IconButton>
+        </Pagination.PrevTrigger>
+
+        <Pagination.Items
+          render={(page) => (
+            <IconButton variant={{ base: "outline", _selected: "solid" }}>
+              {page.value}
+            </IconButton>
+          )}
+        />
+
+        <Pagination.NextTrigger asChild>
+          <IconButton>
+            <LuChevronRight />
+          </IconButton>
+        </Pagination.NextTrigger>
+      </ButtonGroup>
+      </Pagination.Root>
+      </Center>
     </Box>
   );
 };
