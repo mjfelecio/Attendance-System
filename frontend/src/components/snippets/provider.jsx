@@ -3,11 +3,11 @@ import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { PortalManager } from "@chakra-ui/portal";
 import { ColorModeProvider } from "./color-mode";
 
-export function Provider({ children }) {
+export function Provider(props) {
   return (
     <ChakraProvider value={defaultSystem}>
       <PortalManager>
-        <ColorModeProvider>{children}</ColorModeProvider>
+        <ColorModeProvider {...props}/>
       </PortalManager>
     </ChakraProvider>
   );
