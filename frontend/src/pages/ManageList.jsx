@@ -12,7 +12,7 @@ import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
 import { IoPersonAddOutline } from "react-icons/io5";
 import { useState } from "react";
 
-import AddStudentModal from "../features/addStudent/AddStudentModal"; 
+import AddStudentModal from "../features/addStudent/addStudentModal"; 
 import SearchBar from "../components/common/SearchBar";
 import SortBy from "../components/common/SortBy";
 
