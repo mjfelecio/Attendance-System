@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, List } from "@chakra-ui/react";
 
 const Settings = () => {
   return (
@@ -14,6 +14,8 @@ const Settings = () => {
     >
       <Text color={"black"} textAlign={"center"} fontSize={"2xl"}>
         Settings PLACEHOLDER
+        archive
+        account list
       </Text>
     </Box>
   );

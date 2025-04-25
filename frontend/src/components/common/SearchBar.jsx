@@ -8,7 +8,7 @@ const SearchBar = ({ searchTerm, setSearchTerm }) => {
       <Input
         placeholder="Search Name..."
       />
-      <Button colorScheme="blue">
+      <Button colorScheme="blue" variant="ghost" color="black">
         <FontAwesomeIcon icon={faSearch} />
       </Button>
     </HStack>
