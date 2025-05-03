@@ -19,17 +19,12 @@ export const ConfirmationModal = ({ open, title, message, onConfirm, onCancel })
         </DialogHeader>
         <DialogBody>{message}</DialogBody>
         <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button colorPalette={"red"} onClick={() => onCancel()}>
-              Cancel
-            </Button>
-          </DialogActionTrigger>
-          <Button colorPalette={"blue"} onClick={() => onConfirm()}>
-            Confirm
-          </Button>
+          <Button colorPalette="red" onClick={onCancel}>Cancel</Button>
+          <Button colorPalette="blue" onClick={onConfirm}>Confirm</Button>
         </DialogFooter>
-        <DialogCloseTrigger color="black" />
+        <DialogCloseTrigger onClick={onCancel} />
       </DialogContent>
     </DialogRoot>
   );
 };
+
