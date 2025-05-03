@@ -1,12 +1,12 @@
 import { Box, Button, Text } from "@chakra-ui/react";
-import { useConfirmationModal } from "../context/ConfirmationModalProvider";
+import { useConfirmationModal } from "../hooks/useConfirmationModal";
 
 const Dashboard = () => {
   // Test code start (I'm just using this to test something)
   const { showConfirmationModal } = useConfirmationModal();
 
   async function handleDelete() {
-    const confirmed = await showConfirmationModal("Delete?", "Are you sure about that?")
+    const confirmed = await showConfirmationModal("Delete?", "This action is irreversable")
 
     if (confirmed) {
       return alert("Student has been deleted");

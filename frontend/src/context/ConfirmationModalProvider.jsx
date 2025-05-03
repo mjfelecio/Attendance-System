@@ -1,10 +1,8 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useState, useCallback } from "react";
 import { ConfirmationModal } from "../components/common/ConfirmationModal";
 import PropTypes from "prop-types";
 
-const ConfirmationModalContext = createContext();
-
-export const useConfirmationModal = () => useContext(ConfirmationModalContext);
+export const ConfirmationModalContext = createContext();
 
 export const ConfirmationModalProvider = ({ children }) => {
   const [confirmationModalState, setConfirmationModalState] = useState({
