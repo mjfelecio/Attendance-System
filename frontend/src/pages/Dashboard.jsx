@@ -1,14 +1,17 @@
 import { Box, Button, Text } from "@chakra-ui/react";
-import { ConfirmationModal } from "../components/common/ConfirmationModal";
-import { useState } from "react";
+import { useConfirmationModal } from "../context/ConfirmationModalProvider";
 
 const Dashboard = () => {
   // Test code start (I'm just using this to test something)
-  const [isOpen, setIsOpen] = useState(false);
+  const { showConfirmationModal } = useConfirmationModal();
 
-  function handleDelete() {
-    setIsOpen(false);
-    alert("Student has been deleted");
+  async function handleDelete() {
+    const confirmed = await showConfirmationModal("Delete?", "Are you sure about that?")
+
+    if (confirmed) {
+      return alert("Student has been deleted");
+    }
+    alert("Operation cancelled")
   }
   // Test code end
 
@@ -27,14 +30,7 @@ const Dashboard = () => {
         DASHBOARD PLACEHOLDER
       </Text>
       {/* Below components are just a test */}
-      <Button onClick={() => setIsOpen(true)}>Delete Student</Button>
-      <ConfirmationModal
-        title={"Delete student"}
-        message={"Are you sure about this? This action is irreversible"}
-        onConfirm={handleDelete}
-        onCancel={() => setIsOpen(false)}
-        open={isOpen}
-      />
+      <Button onClick={() => handleDelete()}>Delete Student</Button>
     </Box>
   );
 };

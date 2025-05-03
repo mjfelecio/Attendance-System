@@ -51,6 +51,6 @@ export const ConfirmationModalProvider = ({ children }) => {
   );
 };
 
-ConfirmationModal.propTypes = {
+ConfirmationModalProvider.propTypes = {
 	children: PropTypes.node
 }
