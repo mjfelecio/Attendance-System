@@ -1,6 +1,5 @@
 import { Button } from "../snippets/button";
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -9,6 +8,7 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../snippets/dialog";
+import PropTypes from "prop-types";
 
 export const ConfirmationModal = ({ open, title, message, onConfirm, onCancel }) => {
   return (
@@ -19,8 +19,12 @@ export const ConfirmationModal = ({ open, title, message, onConfirm, onCancel })
         </DialogHeader>
         <DialogBody>{message}</DialogBody>
         <DialogFooter>
-          <Button colorPalette="red" onClick={onCancel}>Cancel</Button>
-          <Button colorPalette="blue" onClick={onConfirm}>Confirm</Button>
+          <Button colorPalette="red" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button colorPalette="blue" onClick={onConfirm}>
+            Confirm
+          </Button>
         </DialogFooter>
         <DialogCloseTrigger onClick={onCancel} />
       </DialogContent>
@@ -28,3 +32,10 @@ export const ConfirmationModal = ({ open, title, message, onConfirm, onCancel })
   );
 };
 
+ConfirmationModal.propTypes = {
+  open: PropTypes.bool,
+  title: PropTypes.string,
+  message: PropTypes.string,
+  onConfirm: PropTypes.func,
+  onCancel: PropTypes.func,
+};
