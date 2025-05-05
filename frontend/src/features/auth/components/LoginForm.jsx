@@ -1,22 +1,42 @@
 import { VStack, Input, Button } from '@chakra-ui/react';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
-import React from 'react';
+import React, { useState } from 'react';
+import { useAuth } from '../provider/AuthProvider';
 
 function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useAuth();
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent page reload
+    login(email, password);
+  };
+
   return (
-    <VStack spacing='4'>
-      <FormControl id='email'>
-        <FormLabel>Email address</FormLabel>
-        <Input type='email' />
-      </FormControl>
-      <FormControl id='password'>
-        <FormLabel>Password</FormLabel>
-        <Input type='password' />
-      </FormControl>
-      <Button colorScheme='teal' width='full'>
-        Login
-      </Button>
-    </VStack>
+    <form onSubmit={handleSubmit}>
+      <VStack spacing='4'>
+        <FormControl id='email'>
+          <FormLabel>Email address</FormLabel>
+          <Input
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </FormControl>
+        <FormControl id='password'>
+          <FormLabel>Password</FormLabel>
+          <Input
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </FormControl>
+        <Button type='submit' colorScheme='teal' width='full'>
+          Login
+        </Button>
+      </VStack>
+    </form>
   );
 }
 
