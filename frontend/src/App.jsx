@@ -8,35 +8,46 @@ import Settings from "./pages/Settings";
 import Navbar from "./components/layout/Navbar";
 import Sidebar from "./components/layout/Sidebar";
 import EventTakeAttendance from "./pages/EventTakeAttendance";
+import Login from "./pages/Login";
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
+  // Basic structure: render Login page on '/' and the rest of the app on other routes
   return (
-    <Flex direction="column" h="100vh">
-      <Navbar toggleSidebar={toggleSidebar} />
-      <Flex flex={1} h="calc(100vh - 50px)" overflow="hidden" pos="relative">
-        <Sidebar isOpen={isSidebarOpen} />
-        <Box
-          flex={1}
-          p={6}
-          transition="margin-left 0.5s ease"
-          ml={isSidebarOpen ? "250px" : "0"}
-          bg="white"
-          overflow="auto"
-        >
-          <Routes>
-            <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/CalendarPage" element={<CalendarPage isResized={isSidebarOpen} />} />
-            <Route path="/ManageList" element={<ManageList />} />
-            <Route path="/Settings" element={<Settings />} />
-            <Route path="/EventTakeAttendance" element={<EventTakeAttendance />} />
-          </Routes>
-        </Box>
-      </Flex>
-    </Flex>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/*" element={
+        <Flex direction="column" h="100vh">
+          {/* Navbar is part of the main app layout, not shown on login */}
+          <Navbar toggleSidebar={toggleSidebar} />
+          <Flex flex={1} h="calc(100vh - 50px)" overflow="hidden" pos="relative">
+            {/* Sidebar is part of the main app layout, not shown on login */}
+            <Sidebar isOpen={isSidebarOpen} />
+            <Box
+              flex={1}
+              p={6}
+              transition="margin-left 0.5s ease"
+              ml={isSidebarOpen ? "250px" : "0"}
+              bg="white"
+              overflow="auto"
+            >
+              {/* Nested Routes for the rest of the application */}
+              <Routes>
+                <Route path="/Dashboard" element={<Dashboard />} />
+                <Route path="/CalendarPage" element={<CalendarPage isResized={isSidebarOpen} />} />
+                <Route path="/ManageList" element={<ManageList />} />
+                <Route path="/Settings" element={<Settings />} />
+                <Route path="/EventTakeAttendance" element={<EventTakeAttendance />} />
+                {/* Add a default redirect or a not-found page if needed */}
+              </Routes>
+            </Box>
+          </Flex>
+        </Flex>
+      } />
+    </Routes>
   );
 };
 
