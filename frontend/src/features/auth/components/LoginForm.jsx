@@ -9,7 +9,7 @@ function LoginForm() {
   const { login } = useAuth();
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent page reload
+    event.preventDefault();
     login(email, password);
   };
 
