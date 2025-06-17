@@ -14,6 +14,7 @@ import { Field } from "../../components/snippets/field";
 import { useState, useEffect } from "react";
 import { getDateOnly } from "../../utils/dateUtils";
 import { validateEventInput } from "../../utils/validation";
+import { EventCategorySelectionBox } from "./EventCategorySelectionBox";
 
 const EventModal = ({ isOpen, onClose, onSave, data }) => {
   const [eventData, setEventData] = useState({
@@ -100,6 +101,7 @@ const EventModal = ({ isOpen, onClose, onSave, data }) => {
               onChange={(e) => handleChange("name", e.target.value)}
             />
           </Field>
+          <EventCategorySelectionBox />
           <Field label="Description" paddingBottom="10px">
             <Input
               placeholder="Enter event description"
