@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, Input } from "@chakra-ui/react";
+import { Button, HStack, Input, Text, Textarea, VStack } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from "../../components/snippets/dialog";
 import PropTypes from "prop-types";
-import { Field } from "../../components/snippets/field";
 import { useState, useEffect } from "react";
 import { getDateOnly } from "../../utils/dateUtils";
 import { validateEventInput } from "../../utils/validation";
@@ -87,64 +86,73 @@ const EventModal = ({ isOpen, onClose, onSave, data }) => {
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size={"md"}>
-      <DialogContent bg={"white"}>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle color={"black"} fontSize={"2xl"}>
             {data && Object.keys(data).length > 0 ? "Edit Event" : "Create New Event"}
           </DialogTitle>
         </DialogHeader>
-        <DialogBody color={"black"}>
-          <Field label="Name" required paddingBottom="10px">
-            <Input
-              placeholder="Enter event name"
-              value={eventData.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-            />
-          </Field>
-          <EventCategorySelectionBox />
-          <Field label="Description" paddingBottom="10px">
-            <Input
-              placeholder="Enter event description"
-              size={"2xl"}
-              fontSize={"sm"}
-              value={eventData.description}
-              onChange={(e) => handleChange("description", e.target.value)}
-            />
-          </Field>
-          <HStack paddingBottom="10px">
-            <Field label="Start Date" required>
+        <DialogBody color="black">
+          <VStack align="stretch" spacing="4">
+            {/* Name */}
+            <HStack align="center">
+              <Text minW="100px">Name:</Text>
+              <Input
+                placeholder="Enter event name"
+                value={eventData.name}
+                onChange={(e) => handleChange("name", e.target.value)}
+              />
+            </HStack>
+            {/* Category selection */}
+            <HStack align="center">
+              <Text minW="100px">Category:</Text>
+              <EventCategorySelectionBox />
+            </HStack>
+            {/* Description */}
+            <HStack align="center">
+              <Text minW="100px">Description:</Text>
+              <Textarea
+                textAlign={"start"}
+                placeholder="Enter event description"
+                value={eventData.description}
+                onChange={(e) => handleChange("description", e.target.value)}
+              />
+            </HStack>
+            {/* Date range */}
+            <HStack align="center">
+              <Text minW="100px">Date:</Text>
               <Input
                 type="date"
                 value={eventData.startDate}
                 onChange={(e) => handleChange("startDate", e.target.value)}
+                maxW="150px"
               />
-            </Field>
-            <Field label="End Date">
+              <Text mx="1">—</Text>
               <Input
                 type="date"
                 value={eventData.endDate}
                 onChange={(e) => handleChange("endDate", e.target.value)}
+                maxW="150px"
               />
-            </Field>
-          </HStack>
-          <HStack>
-            <Flex gap={"1"}>
-              <Field label="Start" required>
-                <Input
-                  type="time"
-                  value={eventData.startTime}
-                  onChange={(e) => handleChange("startTime", e.target.value)}
-                />
-              </Field>
-              <Field label="End" required>
-                <Input
-                  type="time"
-                  value={eventData.endTime}
-                  onChange={(e) => handleChange("endTime", e.target.value)}
-                />
-              </Field>
-            </Flex>
-          </HStack>
+            </HStack>
+            {/* Time range */}
+            <HStack align="center">
+              <Text minW="100px">Time:</Text>
+              <Input
+                type="time"
+                value={eventData.startTime}
+                onChange={(e) => handleChange("startTime", e.target.value)}
+                maxW="100px"
+              />
+              <Text mx="1">—</Text>
+              <Input
+                type="time"
+                value={eventData.endTime}
+                onChange={(e) => handleChange("endTime", e.target.value)}
+                maxW="100px"
+              />
+            </HStack>
+          </VStack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
