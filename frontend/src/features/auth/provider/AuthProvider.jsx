@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     console.log('Logging out.');
 
-    navigate('/');
+    navigate('/Login');
   };
 
   return (
