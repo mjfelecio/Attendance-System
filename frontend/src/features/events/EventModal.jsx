@@ -1,4 +1,4 @@
-import { Button, HStack, Input, Text, Textarea, VStack } from "@chakra-ui/react";
+import { Button, CheckboxGroup, HStack, Input, Text, Textarea, VStack } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { getDateOnly } from "../../utils/dateUtils";
 import { validateEventInput } from "../../utils/validation";
 import { EventCategorySelectionBox } from "./EventCategorySelectionBox";
+import { Checkbox } from "@/components/snippets/checkbox";
 
 const EventModal = ({ isOpen, onClose, onSave, data }) => {
   const [step, setStep] = useState(1);
@@ -24,6 +25,12 @@ const EventModal = ({ isOpen, onClose, onSave, data }) => {
     endDate: getDateOnly(new Date()),
     startTime: "",
     endTime: "",
+    // Temporary
+    schoolType: [],
+    strand: [],
+    program: [],
+    sections: [],
+    yearLevel: [],
   });
 
   useEffect(() => {
@@ -185,7 +192,88 @@ const EventModal = ({ isOpen, onClose, onSave, data }) => {
               </DialogTitle>
             </DialogHeader>
             <DialogBody color="black">
-              
+              <VStack align="stretch" spacing="4">
+                {/* School Type */}
+                <VStack align="start">
+                  <Text fontWeight="bold">School Type</Text>
+                  <CheckboxGroup
+                    value={data.schoolType}
+                    onChange={(val) => handleChange("schoolType", val)}
+                  >
+                    <HStack spacing="4">
+                      <Checkbox value="SHS">SHS</Checkbox>
+                      <Checkbox value="College">College</Checkbox>
+                    </HStack>
+                  </CheckboxGroup>
+                </VStack>
+
+                <HStack gap={"120px"}>
+                  {/* Strand (SHS only) */}
+                  <VStack align="start">
+                    <Text fontWeight="bold">Strand (SHS)</Text>
+                    <CheckboxGroup
+                      value={data.strand}
+                      onChange={(val) => handleChange("strand", val)}
+                    >
+                      <VStack align="start">
+                        <Checkbox value="STEM">STEM</Checkbox>
+                        <Checkbox value="ABM">ABM</Checkbox>
+                        <Checkbox value="HUMSS">HUMSS</Checkbox>
+                        <Checkbox value="GAS">GAS</Checkbox>
+                      </VStack>
+                    </CheckboxGroup>
+                  </VStack>
+
+                  {/* Program (College only) */}
+                  <VStack align="start">
+                    <Text fontWeight="bold">Program (College)</Text>
+                    <CheckboxGroup
+                      value={data.program}
+                      onChange={(val) => handleChange("program", val)}
+                    >
+                      <VStack align="start">
+                        <Checkbox value="BSIT">BSIT</Checkbox>
+                        <Checkbox value="BSBA">BSBA</Checkbox>
+                        <Checkbox value="BSED">BSED</Checkbox>
+                        <Checkbox value="BSN">BSN</Checkbox>
+                      </VStack>
+                    </CheckboxGroup>
+                  </VStack>
+                </HStack>
+
+                {/* Sections */}
+                <VStack align="start">
+                  <Text fontWeight="bold">Sections</Text>
+                  <CheckboxGroup
+                    value={data.sections}
+                    onChange={(val) => handleChange("sections", val)}
+                  >
+                    <VStack align="start">
+                      <Checkbox value="Section A">Section A</Checkbox>
+                      <Checkbox value="Section B">Section B</Checkbox>
+                      <Checkbox value="Section C">Section C</Checkbox>
+                    </VStack>
+                  </CheckboxGroup>
+                </VStack>
+
+                {/* Year Level */}
+                <VStack align="start">
+                  <Text fontWeight="bold">Year Level</Text>
+                  <CheckboxGroup
+                    value={data.yearLevel}
+                    onChange={(val) => handleChange("yearLevel", val)}
+                  >
+                    <HStack spacing="4" wrap="wrap">
+                      <Checkbox value="11">11</Checkbox>
+                      <Checkbox value="12">12</Checkbox>
+                      <Checkbox value="1st Year">1st Year</Checkbox>
+                      <Checkbox value="2nd Year">2nd Year</Checkbox>
+                      <Checkbox value="3rd Year">3rd Year</Checkbox>
+                      <Checkbox value="4th Year">4th Year</Checkbox>
+                    </HStack>
+                  </CheckboxGroup>
+                </VStack>
+              </VStack>
             </DialogBody>
             <DialogFooter>
               <Button colorPalette={"red"} onClick={prevStep}>
