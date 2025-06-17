@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "Root package.json for coordinating backend and frontend",
   "scripts": {
-      "build": "npm install && npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
-      "start": "cross-env NODE_ENV=production npm run start --prefix backend",
-      "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+    "build": "npm install && npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "cross-env NODE_ENV=production npm run start --prefix backend",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
   },
   "devDependencies": {
-      "concurrently": "^9.1.0",
-      "cross-env": "^7.0.3"
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.10",
+    "tailwindcss": "^4.1.10"
   }
 }
