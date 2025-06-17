@@ -2,6 +2,7 @@
 
 import {
   Combobox,
+  HStack,
   useFilter,
   useListCollection,
 } from "@chakra-ui/react"
@@ -18,17 +19,19 @@ export const EventCategorySelectionBox = () => {
     <Combobox.Root
       collection={collection}
       onInputValueChange={(e) => filter(e.inputValue)}
-      width="240px"
+      width="420px"
 	  openOnClick
     >
-      <Combobox.Label>Select Event Type</Combobox.Label>
-      <Combobox.Control>
-        <Combobox.Input placeholder="Type to search" />
-        <Combobox.IndicatorGroup>
-          <Combobox.ClearTrigger />
-          <Combobox.Trigger />
-        </Combobox.IndicatorGroup>
-      </Combobox.Control>
+      <HStack gap={"12px"}>
+        <Combobox.Label>Select Event Type: </Combobox.Label>
+        <Combobox.Control>
+          <Combobox.Input placeholder="Type to search" />
+          <Combobox.IndicatorGroup>
+            <Combobox.ClearTrigger />
+            <Combobox.Trigger />
+          </Combobox.IndicatorGroup>
+        </Combobox.Control>
+      </HStack>
         <Combobox.Positioner>
           <Combobox.Content>
             <Combobox.Empty>No items found</Combobox.Empty>
