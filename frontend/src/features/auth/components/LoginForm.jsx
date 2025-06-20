@@ -1,6 +1,6 @@
 import { VStack, Input, Button, Spinner } from '@chakra-ui/react';
 import { Field } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 function LoginForm({ onSubmit, isLoading }) {

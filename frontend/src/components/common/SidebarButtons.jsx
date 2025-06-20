@@ -72,7 +72,7 @@ const SButtons = () => {
         colorScheme="whiteAlpha"
         fontWeight="medium"
         _hover={{ bg: "red" }}
-        onClick={() => navigate ('/Dashboard')}
+        onClick={() => navigate ('/Login')}
       >
         Log Out
       </Button>

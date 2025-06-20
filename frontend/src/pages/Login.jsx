@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Heading,
@@ -6,21 +6,12 @@ import {
   VStack,
   Image,
   Text,
-  Button,
-  Checkbox, // Using Checkbox.Root, Checkbox.Control, Checkbox.Label from your update
+  Checkbox,
   Link,
-  HStack,
-  Spinner,
-  Input // Assuming Input is still needed here temporarily or was part of your manual edit
+  HStack
 } from '@chakra-ui/react';
-
-// Import useNavigate hook
 import { useNavigate } from 'react-router-dom';
-
-// Assuming LoginForm handles inputs and submit
 import LoginForm from '../features/auth/components/LoginForm';
-
-// Assuming logo and background images are in public folder
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,13 +19,11 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  // Handle login submission
   const handleLogin = async (credentials) => {
     setIsLoading(true);
     setErrorMessage('');
 
     try {
-      // Replace with actual login logic
       await new Promise((resolve, reject) => {
         setTimeout(() => {
           if (
@@ -67,10 +56,6 @@ function Login() {
     // TODO: Implement forgot password logic
   };
 
-   // Handle Google Sign-in
-   const handleGoogleSignIn = () => {
-     // TODO: Implement Google Sign-in logic
-   }
 
   return (
     <Flex
@@ -103,6 +88,7 @@ function Login() {
             alt="ACLC College of Ormoc Logo"
             boxSize={{ base: '100px', md: '120px' }}
             objectFit="contain"
+            borderRadius="full"
           />
 
           <Heading size={{ base: 'lg', md: 'xl' }} color="gray.900"> 
