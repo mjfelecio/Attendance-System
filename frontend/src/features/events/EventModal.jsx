@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { getDateOnly } from "../../utils/dateUtils";
 import { validateEventInput } from "../../utils/validation";
-import { EventCategorySelectionBox } from "./EventCategorySelectionBox";
+import { EventCategorySelectionBox } from "./event_modal/EventCategorySelectionBox";
 import { Checkbox } from "@/components/snippets/checkbox";
 
 const EventModal = ({ isOpen, onClose, onSave, data }) => {
