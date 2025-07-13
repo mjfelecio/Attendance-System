@@ -10,10 +10,12 @@ import {
   Link,
   HStack
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../features/auth/provider/AuthProvider';
 import LoginForm from '../features/auth/components/LoginForm';
 
 function Login() {
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -22,25 +24,10 @@ function Login() {
   const handleLogin = async (credentials) => {
     setIsLoading(true);
     setErrorMessage('');
-
     try {
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (
-            credentials.email === 'test@aclc.edu.ph' &&
-            credentials.password === 'password'
-          ) {
-            resolve();
-          } else {
-            reject(new Error('Invalid email or password.'));
-          }
-        }, 1500);
-      });
-      navigate('/Dashboard'); // Go to dashboard on success
-
-    } catch (error) {
-      setErrorMessage(error.message);
-    } finally {
+      await login(credentials.email, credentials.password);
+    } catch (err) {
+      setErrorMessage(err.message);
       setIsLoading(false);
     }
   };
@@ -107,6 +94,12 @@ function Login() {
               <Checkbox.Control />
               <Checkbox.Label color="gray.900">Remember me</Checkbox.Label> 
             </Checkbox.Root>
+
+            <RouterLink to="/Signup">
+              <Link color="blue.700" _hover={{ textDecoration: 'underline' }} fontWeight="medium">
+                Create account
+              </Link>
+            </RouterLink>
 
             <Link
               color="blue.700" 
