@@ -11,15 +11,21 @@ import {
   HStack
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import LoginForm from '../features/auth/components/LoginForm';
+import OtpLoginForm from '../features/auth/components/OtpLoginForm';
+import { useAuth } from '../features/auth/provider/AuthProvider';
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = async (credentials) => {
+  const handleOtpSuccess = (email) => {
+    // Mark user logged-in and go to dashboard
+    login(email, '');
+    navigate('/Dashboard');
+  };
     setIsLoading(true);
     setErrorMessage('');
 
@@ -45,9 +51,11 @@ function Login() {
     }
   };
 
+  /*
+  // Remember-me checkbox (optional)
   // Handle remember me checkbox
   const handleRememberMeChange = (e) => {
-    setRememberMe(e.target.checked);
+    // setRememberMe(e.target.checked);
   };
 
   // Handle forgot password link
@@ -100,7 +108,7 @@ function Login() {
             </Text>
           )}
 
-          <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
+          <OtpLoginForm onSuccess={handleOtpSuccess} />
 
           <HStack justify="space-between" w="100%" fontSize="sm">
             <Checkbox.Root checked={rememberMe} onChange={handleRememberMeChange} colorPalette='blue'>
@@ -118,6 +126,10 @@ function Login() {
               Forgot password?
             </Link>
           </HStack>
+
+          <Link color="blue.700" onClick={() => navigate('/Signup')} fontSize="sm" _hover={{ textDecoration:'underline' }}>
+            Create account
+          </Link>
 
         </VStack>
       </Box>

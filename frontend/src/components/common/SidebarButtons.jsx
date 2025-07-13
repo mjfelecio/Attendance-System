@@ -1,9 +1,11 @@
 import React from "react";
 import { VStack, Button, Text, Icon } from "@chakra-ui/react";
 import { FaTachometerAlt, FaUserGraduate, FaCalendarCheck, FaChartLine } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../features/auth/provider/AuthProvider'; 
 
 const SButtons = () => {
+  const { logout } = useAuth();
     const navigate = useNavigate();
   return (
     <VStack
@@ -72,7 +74,7 @@ const SButtons = () => {
         colorScheme="whiteAlpha"
         fontWeight="medium"
         _hover={{ bg: "red" }}
-        onClick={() => navigate ('/Login')}
+        onClick={logout}
       >
         Log Out
       </Button>

@@ -65,7 +65,7 @@ const SideBarButtons = () => {
         colorScheme="whiteAlpha"
         fontWeight="medium"
         _hover={{ bg: "red" }}
-        onClick={() => navigate("/Dashboard")}
+        onClick={logout}
       >
         Log Out
       </Button>
