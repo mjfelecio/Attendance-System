@@ -1,31 +1,23 @@
 import { useState } from 'react';
-import {
-  Box,
-  Heading,
-  Flex,
-  VStack,
-  Image,
-  Text,
-  Checkbox,
-  Link,
-  HStack
-} from '@chakra-ui/react';
+import { Box, Heading, Flex, VStack, Image, Text, Link } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import OtpLoginForm from '../features/auth/components/OtpLoginForm';
 import { useAuth } from '../features/auth/provider/AuthProvider';
 
 function Login() {
-  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  // const [rememberMe, setRememberMe] = useState(false);
+
+  
+  
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleOtpSuccess = (email) => {
+    const handleOtpSuccess = (email) => {
     // Mark user logged-in and go to dashboard
     login(email, '');
     navigate('/Dashboard');
   };
+    /* Legacy password-based login removed
     setIsLoading(true);
     setErrorMessage('');
 
@@ -51,11 +43,10 @@ function Login() {
     }
   };
 
-  /*
-  // Remember-me checkbox (optional)
-  // Handle remember me checkbox
+  //
+// Removed legacy remember-me and password logic
   const handleRememberMeChange = (e) => {
-    // setRememberMe(e.target.checked);
+    
   };
 
   // Handle forgot password link
@@ -65,7 +56,7 @@ function Login() {
   };
 
 
-  return (
+    return (
     <Flex
       minH="100vh"
       width="100vw"
@@ -108,24 +99,24 @@ function Login() {
             </Text>
           )}
 
-          <OtpLoginForm onSuccess={handleOtpSuccess} />
+                      <OtpLoginForm onSuccess={handleOtpSuccess} />
 
-          <HStack justify="space-between" w="100%" fontSize="sm">
-            <Checkbox.Root checked={rememberMe} onChange={handleRememberMeChange} colorPalette='blue'>
-              <Checkbox.Control />
-              <Checkbox.Label color="gray.900">Remember me</Checkbox.Label> 
-            </Checkbox.Root>
+           checked={rememberMe} onChange={handleRememberMeChange} colorPalette='blue'>
+            <Checkbox.Control />
+            <Checkbox.Label color="gray.900">Remember me</Checkbox.Label> 
+          }
 
-            <Link
-              color="blue.700" 
-              href="#"
-              onClick={handleForgotPasswordClick}
-              _hover={{ textDecoration: 'underline' }}
-              fontWeight="medium"
-            >
-              Forgot password?
+          
+            color="blue.700" 
+            href="#"
+            onClick={handleForgotPasswordClick}
+            _hover={{ textDecoration: 'underline' }}
+            fontWeight="medium"
+          >
+            Forgot password?
+          }
             </Link>
-          </HStack>
+          
 
           <Link color="blue.700" onClick={() => navigate('/Signup')} fontSize="sm" _hover={{ textDecoration:'underline' }}>
             Create account
