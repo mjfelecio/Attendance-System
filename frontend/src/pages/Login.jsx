@@ -88,7 +88,6 @@ function Login() {
             alt="ACLC College of Ormoc Logo"
             boxSize={{ base: '100px', md: '120px' }}
             objectFit="contain"
-            borderRadius="full"
           />
 
           <Heading size={{ base: 'lg', md: 'xl' }} color="gray.900"> 
