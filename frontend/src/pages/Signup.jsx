@@ -6,44 +6,33 @@ import {
   VStack,
   Image,
   Text,
-  Checkbox,
   Link,
-  HStack
+  Input,
+  Button,
+  Spinner,
+  HStack,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../features/auth/provider/AuthProvider';
-import LoginForm from '../features/auth/components/LoginForm';
 
-function Login() {
-  const { login } = useAuth();
+function Signup() {
+  const { signup } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  
 
-  const handleLogin = async (credentials) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
     try {
-      await login(credentials.email, credentials.password);
+      await signup(email, password);
     } catch (err) {
       setErrorMessage(err.message);
-    } finally {
       setIsLoading(false);
     }
   };
-
-  // Handle remember me checkbox
-  const handleRememberMeChange = (e) => {
-    setRememberMe(e.target.checked);
-  };
-
-  // Handle forgot password link
-  const handleForgotPasswordClick = (e) => {
-    e.preventDefault();
-    // TODO: Implement forgot password logic
-  };
-
 
   return (
     <Flex
@@ -62,7 +51,7 @@ function Login() {
         padding={{ base: '6', md: '10' }}
         boxShadow="2xl"
         rounded="2xl"
-        bg='rgba(255, 255, 255, 0.6)'
+        bg="rgba(255, 255, 255, 0.6)"
         position="relative"
         zIndex="1"
         width={{ base: '95%', sm: '400px', md: '450px' }}
@@ -70,7 +59,7 @@ function Login() {
         textAlign="center"
         backdropFilter="blur(10px)"
       >
-        <VStack gap="6"> 
+        <VStack gap="6">
           <Image
             src="/ACLC.jpg"
             alt="ACLC College of Ormoc Logo"
@@ -78,8 +67,8 @@ function Login() {
             objectFit="contain"
           />
 
-          <Heading size={{ base: 'lg', md: 'xl' }} color="gray.900"> 
-            Welcome Back
+          <Heading size={{ base: 'lg', md: 'xl' }} color="gray.900">
+            Create Account
           </Heading>
 
           {errorMessage && (
@@ -88,35 +77,44 @@ function Login() {
             </Text>
           )}
 
-          <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
+          <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+            <VStack gap="4">
+              <Input
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                bg="rgba(255, 255, 255, 0.5)"
+                color="gray.800"
+                required
+              />
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                bg="rgba(255, 255, 255, 0.5)"
+                color="gray.800"
+                required
+              />
+              <Button type="submit" colorPalette="blue" width="full" isLoading={isLoading} loadingText="Signing up..." spinner={<Spinner size="sm" />}>
+                Sign Up
+              </Button>
+            </VStack>
+          </form>
 
-          <HStack justify="space-between" w="100%" fontSize="sm">
-            <Checkbox.Root checked={rememberMe} onChange={handleRememberMeChange} colorPalette='blue'>
-              <Checkbox.Control />
-              <Checkbox.Label color="gray.900">Remember me</Checkbox.Label> 
-            </Checkbox.Root>
-
-            <RouterLink to="/Signup">
+          <HStack fontSize="sm">
+            <Text color="gray.800">Already have an account?</Text>
+            <RouterLink to="/">
               <Link color="blue.700" _hover={{ textDecoration: 'underline' }} fontWeight="medium">
-                Create account
+                Log in
               </Link>
             </RouterLink>
-
-            <Link
-              color="blue.700" 
-              href="#"
-              onClick={handleForgotPasswordClick}
-              _hover={{ textDecoration: 'underline' }}
-              fontWeight="medium"
-            >
-              Forgot password?
-            </Link>
           </HStack>
-
         </VStack>
       </Box>
     </Flex>
   );
 }
 
-export default Login;
+export default Signup;

@@ -9,6 +9,7 @@ import Navbar from "./components/layout/Navbar";
 import Sidebar from "./components/layout/Sidebar";
 import EventTakeAttendance from "./pages/EventTakeAttendance";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,6 +20,7 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/Signup" element={<Signup />} />
       <Route path="/*" element={
         <Flex direction="column" h="100vh">
           {/* Navbar is part of the main app layout, not shown on login */}
