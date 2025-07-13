@@ -141,11 +141,19 @@ const CalendarPage = ({ isResized }) => {
 
   // Updates the size of the calendar when the Sidebar opens or closes
   useEffect(() => {
-    if (calendarRef.current) {
-      setTimeout(() => {
-        calendarRef.current.getApi().updateSize();
-      }, 500);
-    }
+    const updateCalendarSize = () => {
+      if (calendarRef.current) {
+        const calendarApi = calendarRef.current?.getApi?.();
+        if (calendarApi) {
+          calendarApi.updateSize();
+        }
+      }
+    };
+
+    const timer = setTimeout(updateCalendarSize, 500);
+    
+    // Cleanup function to clear the timeout if the component unmounts
+    return () => clearTimeout(timer);
   }, [isResized]);
 
   return (
