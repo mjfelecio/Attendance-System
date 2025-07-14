@@ -57,7 +57,7 @@ const SideBarButtons = () => {
           variant="ghost"
           color="white"
           _hover={{
-            bg: 'red.600',
+            bg: 'blue.700',
             transform: 'translateX(4px)',
           }}
           _active={{
