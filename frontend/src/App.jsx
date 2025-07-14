@@ -16,10 +16,10 @@ const App = () => {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  // Basic structure: render Login page on '/' and the rest of the app on other routes
+
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/Signup" element={<Signup />} />
       <Route path="/*" element={
         <Flex direction="column" h="100vh">
@@ -36,14 +36,12 @@ const App = () => {
               bg="white"
               overflow="auto"
             >
-              {/* Nested Routes for the rest of the application */}
               <Routes>
                 <Route path="/Dashboard" element={<Dashboard />} />
                 <Route path="/CalendarPage" element={<CalendarPage isResized={isSidebarOpen} />} />
                 <Route path="/ManageList" element={<ManageList />} />
                 <Route path="/Settings" element={<Settings />} />
                 <Route path="/EventTakeAttendance" element={<EventTakeAttendance />} />
-                {/* Add a default redirect or a not-found page if needed */}
               </Routes>
             </Box>
           </Flex>

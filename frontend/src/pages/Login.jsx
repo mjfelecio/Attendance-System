@@ -96,10 +96,10 @@ function Login() {
               <Checkbox.Label color="gray.900">Remember me</Checkbox.Label> 
             </Checkbox.Root>
 
-            <RouterLink to="/Signup">
-              <Link color="blue.700" _hover={{ textDecoration: 'underline' }} fontWeight="medium">
+            <RouterLink to="/Signup" style={{ textDecoration: 'none' }}>
+              <Box as="span" color="blue.700" _hover={{ textDecoration: 'underline' }} fontWeight="medium">
                 Create account
-              </Link>
+              </Box>
             </RouterLink>
 
             <Link

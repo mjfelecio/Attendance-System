@@ -105,10 +105,10 @@ function Signup() {
 
           <HStack fontSize="sm">
             <Text color="gray.800">Already have an account?</Text>
-            <RouterLink to="/">
-              <Link color="blue.700" _hover={{ textDecoration: 'underline' }} fontWeight="medium">
+            <RouterLink to="/" style={{ textDecoration: 'none' }}>
+              <Box as="span" color="blue.700" _hover={{ textDecoration: 'underline' }} fontWeight="medium">
                 Log in
-              </Link>
+              </Box>
             </RouterLink>
           </HStack>
         </VStack>

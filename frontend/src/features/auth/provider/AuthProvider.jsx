@@ -49,9 +49,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    console.log('Logging out.');
     localStorage.removeItem('token');
-    navigate('/Login');
+    navigate('/login'); // Changed to navigate to root path where Login component is rendered
   };
 
   return (
