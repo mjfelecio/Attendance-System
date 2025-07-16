@@ -6,11 +6,11 @@ const CalendarEventButtons = () => {
   const navigate = useNavigate();
 
   const handleCreateEventClick = () => {
-    navigate("/CreateEventPage");
+    navigate("/events/new");
   };
 
   const handleTakeAttendanceClick = () => {
-    navigate("/EventTakeAttendance");
+    navigate("/events/attendance");
   };
 
   return (

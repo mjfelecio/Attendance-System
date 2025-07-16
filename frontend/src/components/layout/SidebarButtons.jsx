@@ -13,10 +13,10 @@ const SideBarButtons = () => {
   };
 
   const navItems = [
-    { icon: FaTachometerAlt, label: 'Dashboard', path: '/Dashboard' },
-    { icon: FaCalendarAlt, label: 'Calendar', path: '/CalendarPage' },
-    { icon: FaListAlt, label: 'Manage List', path: '/ManageList' },
-    { icon: FaCog, label: 'Settings', path: '/Settings' },
+    { icon: FaTachometerAlt, label: 'Dashboard', path: '/dashboard' },
+    { icon: FaCalendarAlt, label: 'Calendar', path: '/calendar' },
+    { icon: FaListAlt, label: 'Manage List', path: '/manage' },
+    { icon: FaCog, label: 'Settings', path: '/settings' },
   ];
 
   return (

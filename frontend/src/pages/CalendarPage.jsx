@@ -265,7 +265,7 @@ const CalendarPage = ({ isResized }) => {
               color="white"
               _hover={{ bg: "blue.900" }}
               w="full"
-              onClick={() => navigate("/EventTakeAttendance")}
+              onClick={() => navigate("/events/attendance")}
             >
               Take Attendance
             </Button>

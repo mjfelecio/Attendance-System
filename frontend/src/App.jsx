@@ -47,7 +47,8 @@ const App = () => {
                   <Route path="/calendar" element={<CalendarPage isResized={isSidebarOpen} />} />
                   <Route path="/manage" element={<ManageList />} />
                   <Route path="/settings" element={<Settings />} />
-                  <Route path="/events/:id/attendance" element={<EventTakeAttendance />} />
+                  <Route path="/events/attendance" element={<EventTakeAttendance />} />
+                  <Route path="/events/new" element={<div>Create New Event</div>} />
                   <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>
               </Box>
