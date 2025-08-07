@@ -280,7 +280,7 @@ const CalendarPage = ({ isResized }) => {
           setIsEditing(false);
         }}
         onSave={(e) => (isEditing ? handleEditEvent(selectedEvent.id, e) : handleAddEvent(e))}
-        eventData={isEditing ? restructureEvent(selectedEvent) : {}} // Optional data from a selected event
+        data={isEditing ? restructureEvent(selectedEvent) : {}} // Optional data from a selected event
       />
     </Box>
   );
