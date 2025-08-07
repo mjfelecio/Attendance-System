@@ -1,73 +1,78 @@
-import { VStack, Button, Text, Icon } from "@chakra-ui/react";
-import { FaTachometerAlt, FaUserGraduate, FaCalendarCheck, FaChartLine } from "react-icons/fa";
+import { VStack, Button, Text, Icon, Box } from "@chakra-ui/react";
+import { FaTachometerAlt, FaUserGraduate, FaCalendarAlt, FaListAlt, FaCog, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../features/auth/provider/AuthProvider";
 
 const SideBarButtons = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const navItems = [
+    { icon: FaTachometerAlt, label: 'Dashboard', path: '/dashboard' },
+    { icon: FaCalendarAlt, label: 'Calendar', path: '/calendar' },
+    { icon: FaListAlt, label: 'Manage List', path: '/manage' },
+    { icon: FaCog, label: 'Settings', path: '/settings' },
+  ];
+
   return (
-    <VStack spacing={4} align="stretch" bg="blue.900" color="white" h="100vh" p={4} boxShadow="lg">
-      <Text fontSize="lg" fontWeight="bold" mb={6}>
+    <Box h="100%" display="flex" flexDirection="column">
+      <Text fontSize="xl" fontWeight="bold" mb={6} px={4} pt={4}>
         Navigation
       </Text>
 
-      {/*The icons didn't appear, will debug later */}
+      <VStack spacing={2} align="stretch" flex="1" px={2}>
+        {navItems.map((item) => (
+          <Button
+            key={item.path}
+            leftIcon={<Icon as={item.icon} />}
+            justifyContent="flex-start"
+            variant="ghost"
+            color="white"
+            _hover={{
+              bg: 'blue.700',
+              transform: 'translateX(4px)',
+            }}
+            _active={{
+              bg: 'blue.600',
+            }}
+            onClick={() => navigate(item.path)}
+            py={6}
+            px={4}
+            borderRadius="md"
+          >
+            {item.label}
+          </Button>
+        ))}
+      </VStack>
 
-      <Button
-        variant="white"
-        leftIcon={<Icon as={FaTachometerAlt} />}
-        justifyContent="start"
-        colorScheme="whiteAlpha"
-        fontWeight="medium"
-        _hover={{ bg: "white", color: "black" }}
-        onClick={() => navigate("/Dashboard")}
-      >
-        Dashboard
-      </Button>
-      <Button
-        variant="white"
-        leftIcon={<Icon as={FaUserGraduate} />}
-        justifyContent="start"
-        colorScheme="white"
-        fontWeight="medium"
-        _hover={{ bg: "red" }}
-        onClick={() => navigate("/CalendarPage")}
-      >
-        Calendar
-      </Button>
-      <Button
-        variant="white"
-        leftIcon={<Icon as={FaCalendarCheck} />}
-        justifyContent="start"
-        colorScheme="whiteAlpha"
-        fontWeight="medium"
-        _hover={{ bg: "red" }}
-        onClick={() => navigate("/ManageList")}
-      >
-        Manage List
-      </Button>
-      <Button
-        variant="white"
-        leftIcon={<Icon as={FaChartLine} />}
-        justifyContent="start"
-        colorScheme="whiteAlpha"
-        fontWeight="medium"
-        _hover={{ bg: "red" }}
-        onClick={() => navigate("/Settings")}
-      >
-        Settings
-      </Button>
-      <Button
-        variant="white"
-        leftIcon={<Icon as={FaChartLine} />}
-        justifyContent="start"
-        colorScheme="whiteAlpha"
-        fontWeight="medium"
-        _hover={{ bg: "red" }}
-        onClick={() => navigate("/Dashboard")}
-      >
-        Log Out
-      </Button>
-    </VStack>
+      <Box px={2} py={4}>
+        <Button
+          leftIcon={<Icon as={FaSignOutAlt} />}
+          justifyContent="flex-start"
+          variant="ghost"
+          color="white"
+          _hover={{
+            bg: 'blue.700',
+            transform: 'translateX(4px)',
+          }}
+          _active={{
+            bg: 'red.700',
+          }}
+          onClick={handleLogout}
+          w="100%"
+          py={6}
+          px={4}
+          borderRadius="md"
+        >
+          Log Out
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
