@@ -6,7 +6,6 @@ import {
   VStack,
   Image,
   Text,
-  Link,
   Input,
   Button,
   Spinner,

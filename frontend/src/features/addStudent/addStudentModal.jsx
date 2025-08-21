@@ -2,8 +2,6 @@
 
 import {
   Button,
-  Flex,
-  HStack,
   Input,
   Stack,
 } from "@chakra-ui/react";
@@ -16,8 +14,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogRoot
-} from "../../components/snippets/dialog";
-import { Field } from "../../components/snippets/field";
+} from "@/components/chakra-snippets/dialog";
+import { Field } from "@/components/chakra-snippets/field";
 import PropTypes from "prop-types";
 import { useState, useEffect, useRef } from "react";
 

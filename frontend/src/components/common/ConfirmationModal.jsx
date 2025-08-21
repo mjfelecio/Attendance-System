@@ -1,4 +1,4 @@
-import { Button } from "../snippets/button";
+import { Button } from "@/components/chakra-snippets/button";
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
-} from "../snippets/dialog";
+} from "@/components/chakra-snippets/dialog";
 import PropTypes from "prop-types";
 
 export const ConfirmationModal = ({ open, title, message, onConfirm, onCancel }) => {

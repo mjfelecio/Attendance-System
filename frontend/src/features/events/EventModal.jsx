@@ -8,13 +8,13 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
-} from "../../components/snippets/dialog";
+} from "@/components/chakra-snippets/dialog";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { getDateOnly } from "../../utils/dateUtils";
 import { validateEventInput } from "../../utils/validation";
 import { EventCategorySelectionBox } from "./event_modal/EventCategorySelectionBox";
-import { Checkbox } from "@/components/snippets/checkbox";
+import { Checkbox } from "@/components/chakra-snippets/checkbox";
 
 const EventModal = ({ isOpen, onClose, onSave, data }) => {
   const [step, setStep] = useState(1);
